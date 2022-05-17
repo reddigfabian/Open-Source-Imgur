@@ -27,7 +27,7 @@ class KrogerProductPagingSource(private val pageSize : Int) : PagingSource<Int, 
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, String>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, String>): Int {
         return state.anchorPosition?: STARTING_INDEX
     }
 
