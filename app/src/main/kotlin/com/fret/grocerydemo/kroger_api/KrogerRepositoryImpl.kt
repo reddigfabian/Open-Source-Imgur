@@ -7,20 +7,10 @@ import com.fret.grocerydemo.kroger_api.responses.KrogerProductResponseImpl
 
 class KrogerRepositoryImpl : KrogerRepository {
     override fun getItems(pageSize: Int, page : Int): KrogerProductResponse {
-        return KrogerProductResponseImpl(generateFakeData(pageSize, page))
+        return KrogerProductResponseImpl(DataFaker.generateFakeData(pageSize, page))
     }
 
     override fun getItemsPagingSource(pageSize: Int): PagingSource<Int, String> {
         return KrogerProductPagingSource(pageSize)
-    }
-
-    private fun generateFakeData(pageSize : Int, page : Int) : List<String> {
-        val result = mutableListOf<String>()
-        var indexCopy = (page * pageSize) + 1
-        repeat(pageSize) {
-            result.add("Kroger Item $indexCopy")
-            indexCopy++
-        }
-        return result
     }
 }
