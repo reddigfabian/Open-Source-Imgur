@@ -15,7 +15,7 @@ class ListViewModel : ViewModel() {
     }
 
     private val pagingSourceFactory = InvalidatingPagingSourceFactory {
-        KrogerRepositoryImpl().getItemsPagingSource(PAGE_SIZE)
+        KrogerRepositoryImpl.getItemsPagingSource(PAGE_SIZE)
     }
 
     val items: Flow<PagingData<ListItem>> = Pager(
