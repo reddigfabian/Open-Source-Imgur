@@ -19,7 +19,7 @@ Currently this project covers the following categories in their corresponding br
 * Dependency Injection 
     * No dependency injection at all - `no_dependency_injection`
       * This mostly exists to highlight the need for some form of dependency injection as well as some of the challenges a dependency 
-        injection framework can help such as scoped singletons.
+        injection framework can help address such as scoped singletons.
     * Vanilla Dagger - `vanilla_dagger`
       * Uses only Dagger tools to do injection. This sets up any desired dependency injections and allows us to ensure the injection path
         "works" in a vanilla implementation before transitioning it to Anvil and multiple modules.
