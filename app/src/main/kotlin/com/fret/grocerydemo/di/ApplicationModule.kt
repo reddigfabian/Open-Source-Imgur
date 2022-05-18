@@ -1,11 +1,9 @@
 package com.fret.grocerydemo.di
 
-import com.fret.grocerydemo.kroger_api.KrogerRepository
-import com.fret.grocerydemo.kroger_api.KrogerRepositoryImpl
-import dagger.Binds
+import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 
 @Module
+@ContributesTo(ApplicationScope::class)
 abstract class ApplicationModule {
-    @Binds abstract fun bindsKrogerRepository(krogerRepositoryImpl: KrogerRepositoryImpl) : KrogerRepository
 }

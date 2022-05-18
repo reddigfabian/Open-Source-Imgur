@@ -1,7 +1,7 @@
 package com.fret.grocerydemo.ui.list.views
 
-import com.fret.grocerydemo.ui.list.adapters.ListAdapter
-import com.fret.grocerydemo.ui.list.viewmodels.ListViewModel
+//import com.fret.grocerydemo.common.getAppComponent
+//import com.fret.grocerydemo.common.lazyViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.fret.grocerydemo.common.getAppComponent
 import com.fret.grocerydemo.common.lazyViewModel
 import com.fret.grocerydemo.databinding.FragmentListBinding
+import com.fret.grocerydemo.ui.list.adapters.ListAdapter
+import com.fret.grocerydemo.ui.list.viewmodels.ListViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
