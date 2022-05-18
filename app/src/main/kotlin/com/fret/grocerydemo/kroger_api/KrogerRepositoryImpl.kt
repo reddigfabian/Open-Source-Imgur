@@ -5,7 +5,7 @@ import com.fret.grocerydemo.kroger_api.paging.KrogerProductPagingSource
 import com.fret.grocerydemo.kroger_api.responses.KrogerProductResponse
 import com.fret.grocerydemo.kroger_api.responses.KrogerProductResponseImpl
 
-class KrogerRepositoryImpl : KrogerRepository {
+object KrogerRepositoryImpl : KrogerRepository {
     override fun getItems(pageSize: Int, page : Int): KrogerProductResponse {
         return KrogerProductResponseImpl(DataFaker.generateFakeData(pageSize, page))
     }

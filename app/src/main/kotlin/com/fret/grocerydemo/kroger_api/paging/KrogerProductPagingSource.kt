@@ -13,7 +13,7 @@ class KrogerProductPagingSource(private val pageSize : Int) : PagingSource<Int, 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, String> {
         return try {
             val pageNumber = params.key ?: 0
-            val response = KrogerRepositoryImpl().getItems(pageSize, pageNumber)
+            val response = KrogerRepositoryImpl.getItems(pageSize, pageNumber)
             val prevKey = if (pageNumber > 0) pageNumber - 1 else null
             val nextKey = if (response.products.isNotEmpty()) pageNumber + 1 else null
 
