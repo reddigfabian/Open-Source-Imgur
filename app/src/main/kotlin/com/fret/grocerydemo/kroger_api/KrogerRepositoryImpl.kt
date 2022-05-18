@@ -10,8 +10,4 @@ class KrogerRepositoryImpl @Inject constructor(): KrogerRepository {
     override fun getItems(pageSize: Int, page : Int): KrogerProductResponse {
         return KrogerProductResponseImpl(DataFaker.generateFakeData(pageSize, page))
     }
-
-    override fun getItemsPagingSource(pageSize: Int): PagingSource<Int, String> {
-        return KrogerProductPagingSource(pageSize)
-    }
 }
