@@ -1,5 +1,6 @@
 package com.fret.list.impl.ui.list.views
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fret.list.databinding.FragmentListBinding
-import com.fret.list.ui.list.adapters.ListAdapter
+import com.fret.list.impl.ui.list.adapters.ListAdapter
 import com.fret.list.impl.ui.list.items.ListItem
 import com.fret.list.impl.ui.list.viewmodels.ListViewModel
 import kotlinx.coroutines.flow.collect
@@ -44,8 +45,23 @@ class ListFragment : Fragment(), ListAdapter.ListItemClickListener {
     }
 
     override fun onItemClick(item: ListItem) {
-        val toUri = getString(com.fret.detial.api.R.string.deeplink_detail).replace("{${getString(
-            com.fret.detial.api.R.string.nav_arg_detail)}}", item.text).toUri()
-        findNavController().navigate(toUri)
+        val deeplinkStr = getString(com.fret.detial.api.R.string.deeplink_detail)
+        val navArgDetail = getString(com.fret.detial.api.R.string.nav_arg_detail)
+        findNavController().navigate(deeplinkStr.toUri().replaceQueryParam(navArgDetail, item.text))
+    }
+
+    // TODO: Move to utils module
+    private fun Uri.replaceQueryParam(key : String, newValue : String) : Uri {
+        val queryParameterNames = queryParameterNames
+        val newUriBuilder = buildUpon().clearQuery()
+        queryParameterNames.forEach {
+            newUriBuilder.appendQueryParameter(it,
+                when (it) {
+                    key -> newValue
+                    else -> getQueryParameter(it)
+                }
+            )
+        }
+        return newUriBuilder.build()
     }
 }

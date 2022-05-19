@@ -1,4 +1,4 @@
-package com.fret.list.ui.list.adapters
+package com.fret.list.impl.ui.list.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,9 @@ import com.fret.list.R
 import com.fret.list.impl.ui.list.items.ListItem
 import com.fret.list.impl.ui.list.items.ListItemViewHolder
 
-class ListAdapter(private val listener: ListItemClickListener) : PagingDataAdapter<ListItem, ListItemViewHolder>(ITEM_COMPARATOR) {
+class ListAdapter(private val listener: ListItemClickListener) : PagingDataAdapter<ListItem, ListItemViewHolder>(
+    ITEM_COMPARATOR
+) {
 
     interface ListItemClickListener{
         fun onItemClick(item : ListItem)
