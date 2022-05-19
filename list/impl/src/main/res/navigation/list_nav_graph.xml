@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_nav_graph"
+    app:startDestination="@id/ListFragment">
+
+    <fragment
+        android:id="@+id/ListFragment"
+        android:name="com.fret.list.impl.ui.list.views.ListFragment"
+        tools:layout="@layout/fragment_list">
+        <argument android:name="level"
+            app:argType="integer"
+            android:defaultValue="0"/>
+    </fragment>
+</navigation>

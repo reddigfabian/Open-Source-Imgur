@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string translatable="false" name="nav_arg_detail">nav_arg_detail</string>
+    <string translatable="false" name="deeplink_detail">grocery-demo://com.fret.grocerydemo/detail_fragment/{nav_arg_detail}</string>
+</resources>

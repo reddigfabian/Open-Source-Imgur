@@ -14,3 +14,13 @@ dependencyResolutionManagement {
 }
 rootProject.name = "GroceryDemo"
 include ':app'
+include ':kroger_api'
+include ':kroger_api:api'
+include ':kroger_api:impl'
+include ':di'
+include ':list'
+include ':detail'
+include ':detail:api'
+include ':detail:impl'
+include ':list:api'
+include ':list:impl'
