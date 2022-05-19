@@ -25,7 +25,7 @@ Currently this project covers the following categories in their corresponding br
         "works" in a vanilla implementation before transitioning it to Anvil and multiple modules.
     * Anvil - `anvil`
       * Work in progress. (Not sure what to do here in order to inject ViewModels while still gaining all the speed benefits of anvil.
-        Trying Tangle for this instead.
+        Trying Tangle for this instead.)
     * Tangle - `tangle`
       * Instead of using Anvil directly, we introduce it via Tangle. This gives us access to injectable Android components such as
         Activities, Fragments, and, most importantly, ViewModels.
