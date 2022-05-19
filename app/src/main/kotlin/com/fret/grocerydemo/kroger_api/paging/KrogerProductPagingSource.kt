@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.fret.grocerydemo.kroger_api.KrogerRepository
 import javax.inject.Inject
 
-class KrogerProductPagingSource @Inject constructor(val krogerRepository: KrogerRepository) : PagingSource<Int, String>() {
+class KrogerProductPagingSource @Inject constructor(private val krogerRepository: KrogerRepository) : PagingSource<Int, String>() {
 
     companion object {
         const val PAGE_SIZE = 30

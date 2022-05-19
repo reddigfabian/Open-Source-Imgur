@@ -1,9 +1,9 @@
 package com.fret.grocerydemo.di
 
-import com.fret.grocerydemo.ui.list.viewmodels.ListViewModel
-import dagger.Component
+import com.squareup.anvil.annotations.MergeComponent
+import javax.inject.Singleton
 
-@Component(modules = [ApplicationModule::class])
+@Singleton
+@MergeComponent(AppScope::class)
 interface ApplicationComponent {
-    fun listViewModel(): ListViewModel.Factory
 }
