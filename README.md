@@ -23,4 +23,13 @@ Currently this project covers the following categories in their corresponding br
     * Vanilla Dagger - `vanilla_dagger`
       * Uses only Dagger tools to do injection. This sets up any desired dependency injections and allows us to ensure the injection path
         "works" in a vanilla implementation before transitioning it to Anvil and multiple modules.
+    * Anvil - `anvil`
+      * Work in progress.
+    * Tangle - `tangle`
+      * Instead of using Anvil directly, we introduce it via Tangle. This gives us access to injectable Android components such as
+        Activities, Fragments, and, most importantly, ViewModels.
+    * Tangle with multiple modules - `tangle_multi_module`
+      * Building on top of the Tangle integration, we split everything up into modules with 'api' and 'impl' submodules and add in a "detail"
+        view in order to explore navigation across multiple modules via implicit deeplinks.
+  
         
