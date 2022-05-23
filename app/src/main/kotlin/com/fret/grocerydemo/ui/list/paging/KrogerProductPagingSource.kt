@@ -1,10 +1,11 @@
-package com.fret.grocerydemo.kroger_api.paging
+package com.fret.grocerydemo.ui.list.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.fret.grocerydemo.kroger_api.KrogerRepository
 import com.fret.grocerydemo.kroger_api.KrogerRepositoryImpl
 
-class KrogerProductPagingSource(private val pageSize : Int) : PagingSource<Int, String>() {
+class KrogerProductPagingSource(private val krogerRepository: KrogerRepository, private val pageSize : Int) : PagingSource<Int, String>() {
 
     companion object {
         private const val STARTING_INDEX = 0
@@ -13,7 +14,7 @@ class KrogerProductPagingSource(private val pageSize : Int) : PagingSource<Int, 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, String> {
         return try {
             val pageNumber = params.key ?: 0
-            val response = KrogerRepositoryImpl.getItems(pageSize, pageNumber)
+            val response = krogerRepository.getItems(pageSize, pageNumber)
             val prevKey = if (pageNumber > 0) pageNumber - 1 else null
             val nextKey = if (response.products.isNotEmpty()) pageNumber + 1 else null
 

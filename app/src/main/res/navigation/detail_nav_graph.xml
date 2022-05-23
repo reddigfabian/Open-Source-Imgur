@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_nav_graph"
+    app:startDestination="@id/DetailFragment">
+
+    <fragment
+        android:id="@+id/DetailFragment"
+        android:name="com.fret.grocerydemo.ui.detail.views.DetailFragment"
+        tools:layout="@layout/fragment_detail">
+        <argument android:name="@string/nav_arg_detail"
+            app:argType="string"
+            app:nullable="false"/>
+    </fragment>
+    <deepLink
+        app:uri="@string/deeplink_detail"/>
+</navigation>

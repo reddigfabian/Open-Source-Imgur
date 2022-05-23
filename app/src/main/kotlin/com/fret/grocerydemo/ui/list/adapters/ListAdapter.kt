@@ -8,7 +8,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.fret.grocerydemo.R
 
-class ListAdapter : PagingDataAdapter<ListItem, ListItemViewHolder>(ITEM_COMPARATOR) {
+class ListAdapter(private val listener: ListItemClickListener) : PagingDataAdapter<ListItem, ListItemViewHolder>(ITEM_COMPARATOR) {
+
+    interface ListItemClickListener{
+        fun onItemClick(item : ListItem)
+    }
 
     companion object {
         private val ITEM_COMPARATOR = object : DiffUtil.ItemCallback<ListItem>() {
@@ -24,6 +28,11 @@ class ListAdapter : PagingDataAdapter<ListItem, ListItemViewHolder>(ITEM_COMPARA
     override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
+            holder.itemView.setOnClickListener { clickedView ->
+                getItem(position)?.let { clickedItem ->
+                    listener.onItemClick(clickedItem)
+                }
+            }
         }
     }
 
