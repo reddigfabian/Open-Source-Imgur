@@ -1,8 +1,3 @@
 package com.fret.grocerydemo.kroger_api.responses
 
-class AccessTokenResponse {
-    val accessToken: String? = null
-    val refreshToken: String? = null
-    val expiresIn = 0
-    val tokenType: String? = null
-}
+data class AccessTokenResponse(val expires_in : Int, val access_token : String, val token_type : String, val refresh_token : String?)

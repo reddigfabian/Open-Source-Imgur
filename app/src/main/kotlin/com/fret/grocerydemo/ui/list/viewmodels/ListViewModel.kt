@@ -2,20 +2,29 @@ package com.fret.grocerydemo.ui.list.viewmodels
 
 import com.fret.grocerydemo.ui.list.items.ListItem
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.fret.grocerydemo.kroger_api.KrogerRepositoryImpl
+import com.fret.grocerydemo.kroger_api.KrogerRepository
+import com.fret.grocerydemo.ui.list.paging.KrogerProductPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ListViewModel : ViewModel() {
+class ListViewModel private constructor(private val krogerRepository: KrogerRepository) : ViewModel() {
 
     companion object {
         private const val PAGE_SIZE = 30
     }
 
+    class Factory(private val krogerRepository: KrogerRepository) : ViewModelProvider.NewInstanceFactory() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return ListViewModel(krogerRepository) as T
+        }
+    }
+
     private val pagingSourceFactory = InvalidatingPagingSourceFactory {
-        KrogerRepositoryImpl.getItemsPagingSource(PAGE_SIZE)
+        KrogerProductPagingSource(PAGE_SIZE, krogerRepository)
     }
 
     val items: Flow<PagingData<ListItem>> = Pager(

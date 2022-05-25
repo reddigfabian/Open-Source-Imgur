@@ -9,5 +9,11 @@
         android:id="@+id/ListFragment"
         android:name="com.fret.grocerydemo.ui.list.views.ListFragment"
         tools:layout="@layout/fragment_list">
+        <argument
+            android:name="code"
+            app:argType="string"
+            app:nullable="true"/>
+        <deepLink
+            app:uri="@string/deeplink_list"/>
     </fragment>
 </navigation>
