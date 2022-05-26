@@ -3,22 +3,28 @@ package com.fret.grocerydemo.ui.list.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.fret.grocerydemo.kroger_api.KrogerRepository
+import com.fret.grocerydemo.kroger_api.models.product.ProductModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
-class KrogerProductPagingSource(private val pageSize: Int, private val krogerRepository: KrogerRepository) : PagingSource<Int, String>() {
+class KrogerProductPagingSource(
+    private val pageSize: Int,
+    private val krogerRepository: KrogerRepository
+) : PagingSource<Int, ProductModel>() {
 
     companion object {
-        private const val STARTING_INDEX = 0
+        private const val STARTING_INDEX = 1
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, String> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductModel> {
         return try {
-            val pageNumber = params.key ?: 0
+            val pageNumber = params.key ?: STARTING_INDEX
             val response = krogerRepository.getItems(pageSize, pageNumber)
-            val prevKey = if (pageNumber > 0) pageNumber - 1 else null
-            val nextKey = if (response.products.isNotEmpty()) pageNumber + 1 else null
+            val prevKey = if (pageNumber > STARTING_INDEX) pageNumber - response.meta.pagination.limit else null
+            val nextKey = if (response.data.isNotEmpty()) pageNumber + response.meta.pagination.limit else null
 
             LoadResult.Page(
-                data = response.products,
+                data = response.data,
                 prevKey = prevKey,
                 nextKey = nextKey
             )
@@ -27,7 +33,7 @@ class KrogerProductPagingSource(private val pageSize: Int, private val krogerRep
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, String>): Int {
+    override fun getRefreshKey(state: PagingState<Int, ProductModel>): Int {
         return state.anchorPosition?: STARTING_INDEX
     }
 

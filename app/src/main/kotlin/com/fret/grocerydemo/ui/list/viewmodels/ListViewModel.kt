@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 class ListViewModel private constructor(private val krogerRepository: KrogerRepository) : ViewModel() {
 
     companion object {
-        private const val PAGE_SIZE = 30
+        private const val PAGE_SIZE = 10
     }
 
     class Factory(private val krogerRepository: KrogerRepository) : ViewModelProvider.NewInstanceFactory() {
@@ -34,7 +34,9 @@ class ListViewModel private constructor(private val krogerRepository: KrogerRepo
         ), pagingSourceFactory = pagingSourceFactory
     ).flow
         .map { pagingData ->
-            pagingData.map { string -> ListItem(string) }
+            pagingData.map { productModel ->
+                ListItem(productModel.description)
+            }
         }
         .cachedIn(viewModelScope)
 }

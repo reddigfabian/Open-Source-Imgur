@@ -13,19 +13,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.fret.grocerydemo.R
+import com.fret.grocerydemo.common.extensions.replaceQueryParam
 import com.fret.grocerydemo.databinding.FragmentListBinding
 import com.fret.grocerydemo.kroger_api.KrogerRepository
-import com.fret.grocerydemo.kroger_api.KrogerRepositoryImpl
 import com.fret.grocerydemo.kroger_api.KrogerService
 import com.fret.grocerydemo.kroger_api.requests.AccessTokenRequest
 import com.fret.grocerydemo.ui.list.items.ListItem
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
+import kotlinx.coroutines.runBlocking
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -57,8 +60,19 @@ class ListFragment : Fragment(), ListAdapter.ListItemClickListener {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
+    private var newAccessToken : String? = null
+
+    private val authenticator = Authenticator { _, response ->
+        newAccessToken = krogerRepository.getAccessCode(AccessTokenRequest.ClientCredentialsAccessTokenRequest()).execute().body()?.access_token
+
+        response.request.newBuilder()
+            .header("Authorization", "Bearer $newAccessToken")
+            .build()
+    }
+
     private val client: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(interceptor)
+        .authenticator(authenticator)
         .build()
 
     private val retrofit = Retrofit.Builder()
@@ -69,7 +83,7 @@ class ListFragment : Fragment(), ListAdapter.ListItemClickListener {
 
     val krogerService : KrogerService = retrofit.create(KrogerService::class.java)
 
-    private val krogerRepository : KrogerRepository = KrogerRepositoryImpl(krogerService)
+    private val krogerRepository = KrogerRepository(krogerService)
 
     private val listViewModel : ListViewModel by viewModels {
         ListViewModel.Factory(krogerRepository)
@@ -86,6 +100,10 @@ class ListFragment : Fragment(), ListAdapter.ListItemClickListener {
         binding.listRecycler.adapter = listAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
+            krogerRepository
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             listViewModel.items.flowWithLifecycle(viewLifecycleOwner.lifecycle).collect {
                 listAdapter.submitData(it)
             }
@@ -93,51 +111,12 @@ class ListFragment : Fragment(), ListAdapter.ListItemClickListener {
     }
 
     override fun onItemClick(item: ListItem) {
-        viewLifecycleOwner.lifecycleScope.launch {
-//            try {
-//                krogerRepository.getAuthCode(
-//                    KrogerApiScope.PRODUCT_COMPACT,
-//                    "grocerydemoapp-01a99ad9043b5fb2bd856b5805c58a405307789012342318835",
-//                    getString(R.string.deeplink_list_base)
-//                )
-//            } catch (ex : Exception) {
-//                Log.e(TAG, "onItemClick: ", )
-//            }
-
-            try {
-                val t = krogerRepository.getAccessCode(AccessTokenRequest.ClientCredentialsAccessTokenRequest())
-                Log.d(TAG, "onItemClick: ${t.access_token}")
-            } catch (ex : Exception) {
-                Log.e(TAG, "onItemClick: ", ex)
-            }
-        }
-//        findNavController().navigate(getDeepLinkUri(item.text))
-    }
-
-    private fun getDeepLinkString(itemText : String) : String {
-        val deeplinkStr = getString(R.string.deeplink_detail)
-        val navArgDetail = getString(R.string.nav_arg_detail)
-        return deeplinkStr.replace("{${navArgDetail}}", itemText)
+        findNavController().navigate(getDeepLinkUri(item.text))
     }
 
     private fun getDeepLinkUri(itemText : String) : Uri {
         val deeplinkStr = getString(R.string.deeplink_detail)
         val navArgDetail = getString(R.string.nav_arg_detail)
         return deeplinkStr.toUri().replaceQueryParam(navArgDetail, itemText)
-    }
-
-    // TODO: Move to utils module
-    private fun Uri.replaceQueryParam(key : String, newValue : String) : Uri {
-        val queryParameterNames = queryParameterNames
-        val newUriBuilder = buildUpon().clearQuery()
-        queryParameterNames.forEach {
-            newUriBuilder.appendQueryParameter(it,
-                when (it) {
-                    key -> newValue
-                    else -> getQueryParameter(it)
-                }
-            )
-        }
-        return newUriBuilder.build()
     }
 }
