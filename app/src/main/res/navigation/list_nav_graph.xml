@@ -10,10 +10,10 @@
         android:name="com.fret.grocerydemo.ui.list.views.ListFragment"
         tools:layout="@layout/fragment_list">
         <argument
-            android:name="code"
+            android:name="@string/DEEPLINK_ACCESS_CODE_PARAM"
             app:argType="string"
             app:nullable="true"/>
         <deepLink
-            app:uri="@string/deeplink_list"/>
+            app:uri="@string/DEEPLINK_REDIRECT_WITH_ACCESS_CODE_PARAM"/>
     </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.fret.grocerydemo.kroger_api.responses
+package com.fret.grocerydemo.kroger_api.responses.product
 
 import com.fret.grocerydemo.kroger_api.models.meta.MetaModel
 import com.fret.grocerydemo.kroger_api.models.product.ProductModel

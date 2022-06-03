@@ -18,6 +18,15 @@
         <activity
             android:name=".ui.common.MainActivity"
             android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.DEFAULT"/>-->
+<!--                <category android:name="android.intent.category.BROWSABLE"/>-->
+<!--                <data android:scheme="${DEEPLINK_SCHEME}"/>-->
+<!--                <data android:host="${DEEPLINK_HOST}"/>-->
+<!--                <data android:scheme="${DEEPLINK_SCHEME}"/>-->
+<!--                <data android:path="${DEEPLINK_LIST_FRAGMENT}"/>-->
+<!--            </intent-filter>-->
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <action android:name="android.intent.action.MAIN"/>

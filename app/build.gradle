@@ -18,6 +18,32 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        def KROGER_API_BASE_URL = "https://api.kroger.com/v1/"
+        def KROGER_OAUTH2_AUTH_CODE = "${KROGER_API_BASE_URL}connect/oauth2/authorize"
+        def KROGER_OAUTH2_ACCESS_TOKEN = "${KROGER_API_BASE_URL}connect/oauth2/token"
+        buildConfigField "String", "KROGER_API_BASE_URL", "\"$KROGER_API_BASE_URL\""
+        buildConfigField "String", "KROGER_OAUTH2_AUTH_CODE", "\"$KROGER_OAUTH2_AUTH_CODE\""
+        buildConfigField "String", "KROGER_OAUTH2_ACCESS_TOKEN", "\"$KROGER_OAUTH2_ACCESS_TOKEN\""
+
+        def DEEPLINK_SCHEME = "grocery-demo"
+        def DEEPLINK_HOST = "com.fret.grocerydemo"
+        def DEEPLINK_URI = "$DEEPLINK_SCHEME://$DEEPLINK_HOST"
+        def DEEPLINK_LIST_FRAGMENT = "/list_fragment"
+        def DEEPLINK_REDIRECT = "$DEEPLINK_URI$DEEPLINK_LIST_FRAGMENT"
+        def DEEPLINK_ACCESS_CODE_PARAM = "code"
+        def DEEPLINK_REDIRECT_WITH_ACCESS_CODE_PARAM = "$DEEPLINK_REDIRECT?$DEEPLINK_ACCESS_CODE_PARAM={$DEEPLINK_ACCESS_CODE_PARAM}"
+
+        buildConfigField "String", "DEEPLINK_REDIRECT", "\"$DEEPLINK_REDIRECT\""
+        resValue "string", "DEEPLINK_ACCESS_CODE_PARAM", DEEPLINK_ACCESS_CODE_PARAM
+        resValue "string", "DEEPLINK_REDIRECT_WITH_ACCESS_CODE_PARAM", DEEPLINK_REDIRECT_WITH_ACCESS_CODE_PARAM
+
+        manifestPlaceholders = [
+                appAuthRedirectScheme : DEEPLINK_SCHEME,//Used by AppAuth
+                DEEPLINK_SCHEME : DEEPLINK_SCHEME,
+                DEEPLINK_HOST : DEEPLINK_HOST,
+                DEEPLINK_LIST_FRAGMENT : DEEPLINK_LIST_FRAGMENT
+        ]
     }
 
     signingConfigs {
@@ -73,6 +99,7 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
     implementation "com.squareup.moshi:moshi-adapters:1.8.0"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation 'net.openid:appauth:0.11.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

@@ -1,5 +1,6 @@
 package com.fret.grocerydemo.ui.list.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import com.fret.grocerydemo.ui.list.items.ListItem
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +11,10 @@ import com.fret.grocerydemo.ui.list.paging.KrogerProductPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ListViewModel private constructor(private val krogerRepository: KrogerRepository) : ViewModel() {
+class ListViewModel private constructor(
+//    private val savedStateHandle: SavedStateHandle,
+    private val krogerRepository: KrogerRepository
+) : ViewModel() {
 
     companion object {
         private const val PAGE_SIZE = 10

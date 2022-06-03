@@ -1,14 +1,16 @@
 package com.fret.grocerydemo.kroger_api
 
-import com.fret.grocerydemo.kroger_api.responses.AccessTokenResponse
-import com.fret.grocerydemo.kroger_api.responses.KrogerProductResponse
-import kotlinx.coroutines.flow.Flow
+import com.fret.grocerydemo.kroger_api.responses.identity.KrogerIdentityResponse
+import com.fret.grocerydemo.kroger_api.responses.oauth2.AccessTokenResponse
+import com.fret.grocerydemo.kroger_api.responses.product.KrogerProductResponse
 import retrofit2.Call
 import retrofit2.http.*
 
 interface KrogerService {
+
+    //OAuth2
     @GET("connect/oauth2/authorize")
-    suspend fun getAuthCode(
+    fun getAuthCode(
         @Query("scope") scope : String,
         @Query("client_id") clientID : String,
         @Query("redirect_uri", encoded = true) redirectUri : String,
@@ -26,10 +28,17 @@ interface KrogerService {
         @Field("refresh_token") refreshToken : String? = null
     ) : Call<AccessTokenResponse>
 
+    //Identity
+    @GET("identity/profile")
+    suspend fun getUserID(
+        @Header("Authorization") accessToken : String
+    ) : KrogerIdentityResponse
+
+    //Products
     @GET("products")
     suspend fun getProducts(
         @Query("filter.limit") limit : Int,
         @Query("filter.start") start : Int,
-        @Query("filter.term") filterTerm : String = "creamer"
+        @Query("filter.term") filterTerm : String = "kroger"
     ) : KrogerProductResponse
 }
