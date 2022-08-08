@@ -1,0 +1,61 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.squareup.anvil'
+}
+
+android {
+    namespace 'com.fret.imgur_api.impl'
+    compileSdk 32
+    
+    Properties localProperties = new Properties()
+    localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 32
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "IMGUR_CLIENT_ID", localProperties.get("imgur.client.id", "")
+        buildConfigField "String", "IMGUR_CLIENT_SECRET", localProperties.get("imgur.client.secret", "")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    def javaVersion = JavaVersion.VERSION_11
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+    kotlinOptions {
+        jvmTarget = javaVersion.toString()
+    }
+}
+anvil {
+    generateDaggerFactories = true
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.moshi:moshi-kotlin:1.13.0'
+    api "com.squareup.retrofit2:converter-moshi:2.9.0"
+    api "com.squareup.moshi:moshi-adapters:1.8.0"
+    api 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+
+    api(project(":imgur_api:api"))
+    implementation project(":di")
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

@@ -7,12 +7,10 @@
 
     <fragment
         android:id="@+id/DetailFragment"
-        android:name="com.fret.grocerydemo.ui.detail.views.DetailFragment"
+        android:name="com.fret.gallery_detail.impl.views.DetailFragment"
         tools:layout="@layout/fragment_detail">
         <argument android:name="@string/nav_arg_detail"
             app:argType="string"
             app:nullable="false"/>
     </fragment>
-    <deepLink
-        app:uri="@string/deeplink_detail"/>
 </navigation>

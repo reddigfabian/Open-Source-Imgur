@@ -1,14 +1,11 @@
 <!DOCTYPE
     resources [
         <!ENTITY nav_arg_detail "nav_arg_detail">
-<!--        <!ENTITY deeplink_list_url "grocery-demo://com.fret.grocerydemo/list_fragment">-->
     ]
 >
 <resources>
-    <string name="app_name">GroceryDemo</string>
-
+    <string name="app_name">Open Source Imgur</string>
+    ®
     <string translatable="false" name="nav_arg_detail">&nav_arg_detail;</string>
-    <string translatable="false" name="deeplink_detail">grocery-demo://com.fret.grocerydemo/detail_fragment?&nav_arg_detail;={&nav_arg_detail;}</string>
-<!--    <string translatable="false" name="deeplink_list_base">&deeplink_list_url;</string>-->
-<!--    <string translatable="false" name="deeplink_list">&deeplink_list_url;?code={code}</string>-->
+    <string name="my_images">My Images</string>
 </resources>
