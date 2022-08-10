@@ -50,7 +50,7 @@ class ListViewModel @AssistedInject constructor(
     ).flow
         .map { pagingData ->
             pagingData.map { galleryItemModel ->
-                ImgurListItem(galleryItemModel.title)
+                ImgurListItem(galleryItemModel.title, "https://i.imgur.com/${galleryItemModel.cover}.jpeg")
             }
         }
         .cachedIn(viewModelScope)

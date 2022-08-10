@@ -49,6 +49,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
     implementation 'com.google.dagger:dagger:2.43.1'
     implementation 'net.openid:appauth:0.11.1'
+    implementation 'io.coil-kt:coil:2.1.0'
+    implementation 'io.coil-kt:coil-gif:2.1.0'
 
     api project(':gallery_list:api')
 
