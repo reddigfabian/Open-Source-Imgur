@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="Embedded JDK" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/anvilcodegen" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/constants" />
+            <option value="$PROJECT_DIR$/di" />
+            <option value="$PROJECT_DIR$/gallery_detail" />
+            <option value="$PROJECT_DIR$/gallery_detail/api" />
+            <option value="$PROJECT_DIR$/gallery_detail/impl" />
+            <option value="$PROJECT_DIR$/gallery_list" />
+            <option value="$PROJECT_DIR$/gallery_list/api" />
+            <option value="$PROJECT_DIR$/gallery_list/impl" />
+            <option value="$PROJECT_DIR$/imgur_api" />
+            <option value="$PROJECT_DIR$/imgur_api/api" />
+            <option value="$PROJECT_DIR$/imgur_api/impl" />
+            <option value="$PROJECT_DIR$/imgur_auth" />
+            <option value="$PROJECT_DIR$/imgur_auth/api" />
+            <option value="$PROJECT_DIR$/imgur_auth/impl" />
+            <option value="$PROJECT_DIR$/utils" />
           </set>
         </option>
       </GradleProjectSettings>

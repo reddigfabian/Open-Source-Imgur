@@ -1,0 +1,53 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.squareup.anvil'
+}
+
+android {
+    namespace 'com.fret.impl'
+    compileSdk 32
+
+    Properties localProperties = new Properties()
+    localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    defaultConfig {
+        minSdk 16
+        targetSdk 32
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "IMGUR_CLIENT_ID", localProperties.get("imgur.client.id", "")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+anvil {
+    generateDaggerFactories = true
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.8.0'
+    api 'net.openid:appauth:0.11.1'
+
+    api(project(":imgur_auth:api"))
+    implementation project(':di')
+    implementation project(':constants')
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

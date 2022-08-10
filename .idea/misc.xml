@@ -3,10 +3,28 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_person.xml" value="0.2735" />
+        <entry key="app/src/main/res/drawable/ic_person_filled.xml" value="0.2735" />
+        <entry key="app/src/main/res/drawable/person-48px.xml" value="0.131" />
+        <entry key="app/src/main/res/drawable/person_filled-48px.xml" value="0.131" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3885416666666667" />
+        <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.3885416666666667" />
         <entry key="app/src/main/res/layout/fragment_list.xml" value="0.3885416666666667" />
         <entry key="app/src/main/res/layout/item_list.xml" value="0.3885416666666667" />
+        <entry key="app/src/main/res/menu/list_menu.xml" value="0.35185185185185186" />
+        <entry key="detail/impl/src/main/res/layout/fragment_detail.xml" value="0.1889564336372847" />
+        <entry key="detail/src/main/res/layout/fragment_list.xml" value="0.1889564336372847" />
+        <entry key="detail/src/main/res/layout/item_list.xml" value="0.1889564336372847" />
+        <entry key="gallery_detail/impl/src/main/res/layout/fragment_detail.xml" value="0.3885416666666667" />
+        <entry key="gallery_list/impl/src/main/res/drawable/ic_person.xml" value="0.2735" />
+        <entry key="gallery_list/impl/src/main/res/layout/fragment_list.xml" value="0.3885416666666667" />
+        <entry key="gallery_list/impl/src/main/res/layout/item_list.xml" value="0.3885416666666667" />
+        <entry key="gallery_list/impl/src/main/res/menu/list_menu.xml" value="0.3885416666666667" />
+        <entry key="list/impl/src/main/res/layout/item_list.xml" value="0.1889564336372847" />
+        <entry key="list/src/main/res/layout/fragment_list.xml" value="0.1889564336372847" />
+        <entry key="list/src/main/res/layout/item_list.xml" value="0.1889564336372847" />
       </map>
     </option>
   </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
