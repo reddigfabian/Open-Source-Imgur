@@ -1,4 +1,4 @@
-# GroceryDemo
+# Open Source Imgur
 
 ## Setup
 
