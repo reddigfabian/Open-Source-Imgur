@@ -23,7 +23,7 @@ interface ImgurService {
         @Path("sort") page : Int = 0,
         @Query("showViral") showViral : Boolean = true,
         @Query("showMature") showMature : Boolean = false,
-        @Query("showViral") album_previews : Boolean = true
+        @Query("albumPreviews") albumPreviews : Boolean = false
     ) : GalleryListResponse
 
     @GET("account/me/images")

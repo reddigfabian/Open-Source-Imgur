@@ -8,6 +8,6 @@ import com.fret.gallery_list.impl.LibUiBindings
 import com.fret.gallery_list.impl.ViewModelFactoryPlugin
 import com.fret.utils.bindings
 
-inline fun <reified VM : ViewModel> Fragment.bindingViewModelFactory(fragment: Fragment): Lazy<VM> = lazy {
-    (bindings<LibUiBindings>().viewModelFactories()[VM::class.java] as ViewModelFactoryPlugin<VM, String>).create("Test")
+inline fun <reified VM : ViewModel> Fragment.bindingViewModelFactory(vararg args: Any): Lazy<VM> = lazy {
+    (bindings<LibUiBindings>().viewModelFactories()[VM::class.java] as ViewModelFactoryPlugin<VM>).create("Test")
 }

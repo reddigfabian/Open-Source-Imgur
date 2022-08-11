@@ -50,7 +50,7 @@ class ListFragment : Fragment(), DaggerComponentOwner,  ImgurListAdapter.ImgurLi
     @Inject lateinit var imgurKtAuthService: AuthorizationService
     @Inject lateinit var imgurAuthState: AuthState
 
-    private val listViewModel: ListViewModel by bindingViewModelFactory(this)
+    private val listViewModel: ListViewModel by bindingViewModelFactory()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -94,7 +94,7 @@ class ListFragment : Fragment(), DaggerComponentOwner,  ImgurListAdapter.ImgurLi
             }
         }
         // TODO: This toast is a reminder to replace initialState String with savedStateHandle and to make a more flexible code generator
-        Toast.makeText(requireContext(), listViewModel.initialState, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), listViewModel.initialState, Toast.LENGTH_SHORT).show()
     }
 
     override fun onImgurItemClick(item: ImgurListItem) {

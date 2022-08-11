@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationService
+import javax.inject.Inject
 
 private const val TAG = "ListViewModel"
 
@@ -27,9 +28,9 @@ private const val TAG = "ListViewModel"
 class ListViewModel @AssistedInject constructor(
 //    val savedStateHandle: SavedStateHandle,
     @Assisted val initialState: String,
-    val imgurRepository: ImgurRepository,
-    val imgurAuthState: AuthState,
-    val imgurKtAuthService: AuthorizationService
+    private val imgurRepository: ImgurRepository,
+    private val imgurAuthState: AuthState,
+    private val imgurKtAuthService: AuthorizationService
 ) : ViewModel() {
 
     companion object {

@@ -50,7 +50,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             android:maxLines="1"
             android:textColor="@color/imgur_lightest_gray"
-            android:text="1724"
+            android:textSize="14sp"
             app:drawableStartCompat="@drawable/ic_up_arrow"
             app:drawableTint="@color/imgur_lightest_gray"
             android:layout_marginBottom="16dp"
@@ -66,7 +66,7 @@
             app:layout_constraintTop_toTopOf="@id/tvScore"
             android:maxLines="1"
             android:textColor="@color/imgur_lightest_gray"
-            android:text="1129"
+            android:textSize="14sp"
             app:drawableStartCompat="@drawable/ic_comment_bubble"
             app:drawableTint="@color/imgur_lightest_gray"
             android:drawablePadding="4dp"/>
@@ -80,9 +80,20 @@
             app:layout_constraintTop_toTopOf="@id/tvScore"
             android:maxLines="1"
             android:textColor="@color/imgur_lightest_gray"
+            android:textSize="14sp"
             app:drawableStartCompat="@drawable/ic_views_eye"
             app:drawableTint="@color/imgur_lightest_gray"
             android:drawablePadding="4dp"/>
+
+        <View
+            android:id="@+id/voteIndicator"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            tools:background="@color/imgur_green"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
