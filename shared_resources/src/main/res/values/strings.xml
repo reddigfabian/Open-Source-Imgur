@@ -1,11 +1,4 @@
-<!DOCTYPE
-    resources [
-        <!ENTITY nav_arg_detail "nav_arg_detail">
-    ]
->
 <resources>
     <string name="app_name">Open Source Imgur</string>
-    ®
-    <string translatable="false" name="nav_arg_detail">&nav_arg_detail;</string>
     <string name="my_images">My Images</string>
 </resources>

@@ -17,7 +17,7 @@
         android:paddingHorizontal="16dp"
         android:paddingTop="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_list"
+        tools:listitem="@layout/list_item_gallery"
         tools:itemCount="16"
         android:clipToPadding="false"/>
 

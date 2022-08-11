@@ -1,6 +1,7 @@
 package com.fret.imgur_api.api.models.gallery
 
 data class GalleryItemModel(
+    val id: String,
     val title : String?,
     val cover: String?,
     val score: Int = 0,

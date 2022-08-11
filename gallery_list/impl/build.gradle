@@ -54,6 +54,7 @@ dependencies {
 
 
     api project(':gallery_list:api')
+    implementation project(":gallery_detail:api")
     implementation project(":shared_resources")
     implementation project(':di')
     implementation project(':utils')

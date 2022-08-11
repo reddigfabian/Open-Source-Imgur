@@ -1,0 +1,9 @@
+<!DOCTYPE
+    resources [
+        <!ENTITY nav_arg_detail "nav_arg_detail">
+    ]
+>
+<resources>
+    <string name="app_name">Open Source Imgur</string>
+    <string name="my_images">Meine Bilder</string>
+</resources>
