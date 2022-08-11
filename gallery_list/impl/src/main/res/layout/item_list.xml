@@ -8,29 +8,81 @@
     android:layout_marginVertical="8dp"
     android:clickable="true"
     android:focusable="true"
-    android:background="?attr/selectableItemBackground">
+    android:background="?attr/selectableItemBackground"
+    android:backgroundTint="@color/imgur_light_gray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/tvItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Item N"/>
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/ivItem"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvItem"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvTitle"
+            android:adjustViewBounds="true"/>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvScore"
+            app:layout_constraintTop_toBottomOf="@id/ivItem"
+            android:layout_margin="16dp"
+            android:textColor="@color/design_default_color_on_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="start"
+            tools:text="Item N" />
+
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintEnd_toStartOf="@id/tvComments"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            android:maxLines="1"
+            android:textColor="@color/imgur_lightest_gray"
+            android:text="1724"
+            app:drawableStartCompat="@drawable/ic_up_arrow"
+            app:drawableTint="@color/imgur_lightest_gray"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            android:drawablePadding="4dp"/>
+
+        <TextView
+            android:id="@+id/tvComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/tvScore"
+            app:layout_constraintEnd_toStartOf="@id/tvViews"
+            app:layout_constraintTop_toTopOf="@id/tvScore"
+            android:maxLines="1"
+            android:textColor="@color/imgur_lightest_gray"
+            android:text="1129"
+            app:drawableStartCompat="@drawable/ic_comment_bubble"
+            app:drawableTint="@color/imgur_lightest_gray"
+            android:drawablePadding="4dp"/>
+
+        <TextView
+            android:id="@+id/tvViews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/tvComments"
+            app:layout_constraintEnd_toEndOf="@id/tvTitle"
+            app:layout_constraintTop_toTopOf="@id/tvScore"
+            android:maxLines="1"
+            android:textColor="@color/imgur_lightest_gray"
+            app:drawableStartCompat="@drawable/ic_views_eye"
+            app:drawableTint="@color/imgur_lightest_gray"
+            android:drawablePadding="4dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

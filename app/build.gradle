@@ -90,6 +90,7 @@ dependencies {
 
     kapt 'com.google.dagger:dagger-compiler:2.43.1'
 
+    implementation project(":shared_resources")
     implementation project(":di")
     implementation project(":utils")
     implementation project(":gallery_list:impl")

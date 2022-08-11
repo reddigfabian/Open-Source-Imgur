@@ -18,7 +18,10 @@ class ImgurListAdapter(private val listener: ImgurListItemClickListener) : Pagin
 
     companion object {
         private val ITEM_COMPARATOR = object : DiffUtil.ItemCallback<ImgurListItem>() {
-            override fun areContentsTheSame(oldItem: ImgurListItem, newItem: ImgurListItem): Boolean = oldItem.text == newItem.text
+            override fun areContentsTheSame(oldItem: ImgurListItem, newItem: ImgurListItem): Boolean {
+                return oldItem.title == newItem.title &&
+                        oldItem.views == newItem.views
+            }
             override fun areItemsTheSame(oldItem: ImgurListItem, newItem: ImgurListItem): Boolean = oldItem == newItem
         }
     }

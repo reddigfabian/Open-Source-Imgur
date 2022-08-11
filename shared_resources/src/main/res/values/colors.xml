@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--  Base colors  -->
     <color name="imgur_black">#181817</color>
-    <color name="imgur_gray">#2B2B2B</color>
+    <color name="imgur_gray">#2e3035</color>
+    <color name="imgur_light_gray">#484a50</color>
+    <color name="imgur_lightest_gray">#8f9399</color>
     <color name="imgur_green">#56b475</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
 </resources>

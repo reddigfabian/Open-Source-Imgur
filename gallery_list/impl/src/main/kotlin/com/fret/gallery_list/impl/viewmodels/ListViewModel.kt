@@ -50,11 +50,16 @@ class ListViewModel @AssistedInject constructor(
     ).flow
         .map { pagingData ->
             pagingData.map { galleryItemModel ->
-                ImgurListItem(galleryItemModel.title, "https://i.imgur.com/${galleryItemModel.cover}.jpeg")
+                ImgurListItem(
+                    galleryItemModel.title,
+                    "https://i.imgur.com/${galleryItemModel.cover}.jpeg",
+                    galleryItemModel.score,
+                    galleryItemModel.comment_count,
+                    galleryItemModel.views
+                )
             }
         }
         .cachedIn(viewModelScope)
-
 
     fun test() {
         imgurAuthState.performActionWithFreshTokens(imgurKtAuthService, object : AuthState.AuthStateAction {
@@ -65,7 +70,6 @@ class ListViewModel @AssistedInject constructor(
             ) {
                 if (ex != null) {
                     Log.d(TAG, "exception: $ex")
-//                    Toast.makeText(requireContext(), "DID A FAT OOPS!", Toast.LENGTH_SHORT).show()
                     return
                 } else {
                     accessToken?.let {
