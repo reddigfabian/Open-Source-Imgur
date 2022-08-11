@@ -31,7 +31,8 @@ import javax.inject.Inject
 @AutoService(CodeGenerator::class)
 class ContributesViewModelCodeGenerator : CodeGenerator {
     companion object {
-        private val viewModelFactoryFqName = FqName("com.fret.gallery_list.impl.ViewModelFactoryPlugin")
+        private val viewModelFactoryFqNameExperimental = FqName("com.fret.gallery_list.impl.ViewModelFactoryExperimental")
+        private val viewModelFactoryFqName = FqName("com.fret.gallery_list.impl.ViewModelFactory")
         private val viewModelKeyFqName = FqName("com.fret.gallery_list.impl.ViewModelKey")
     }
 
@@ -51,17 +52,19 @@ class ContributesViewModelCodeGenerator : CodeGenerator {
         val isAssisted = assistedInjectConstructor != null
 
         val result = mutableListOf<GeneratedFile>()
-        result.add(generateModule(vmClass, codeGenDir, module, isAssisted))
+        result.add(generateModuleExperimental(vmClass, codeGenDir, module, isAssisted))
         if (isAssisted) {
-            result.add(generateAssistedFactory(vmClass, codeGenDir, module, isAssisted))
+            result.add(generateAssistedFactoryExperimental(vmClass, codeGenDir, module))
         }
+        result.add(generateModule(vmClass, codeGenDir, module))
+        result.add(generateAssistedFactory(vmClass, codeGenDir, module))
         return result
     }
 
-    private fun generateModule(vmClass: ClassReference.Psi, codeGenDir: File, module: ModuleDescriptor, isAssisted: Boolean): GeneratedFile {
+    private fun generateModuleExperimental(vmClass: ClassReference.Psi, codeGenDir: File, module: ModuleDescriptor, isAssisted: Boolean): GeneratedFile {
         val injectConstructor = vmClass.constructors.singleOrNull { it.isAnnotatedWith(Inject::class.fqName) }
         val generatedPackage = vmClass.packageFqName.toString()
-        val moduleClassName = "${vmClass.shortName}_Module"
+        val moduleClassName = "${vmClass.shortName}_Module_Experimental"
         val scope = vmClass.annotations.single { it.fqName == ContributesViewModel::class.fqName }.scope()
 
         val classBuilder = TypeSpec.classBuilder(moduleClassName)
@@ -72,17 +75,17 @@ class ContributesViewModelCodeGenerator : CodeGenerator {
                     .addMember("%T::class", scope.asClassName()).build()
             )
             .addFunction(
-                FunSpec.builder("bind${vmClass.shortName}Factory")
+                FunSpec.builder("bind${vmClass.shortName}Factory_Experimental")
                     .addModifiers(KModifier.ABSTRACT)
                     .addParameter(
                         "factory",
                         ClassName(
                             generatedPackage,
-                            "${vmClass.shortName}_${if (isAssisted) "AssistedFactory" else "Factory"}"
+                            "${vmClass.shortName}_${if (isAssisted) "AssistedFactory_Experimental" else "Factory_Experimental"}"
                         )
                     )
                     .returns(
-                        viewModelFactoryFqName.asClassName(module).parameterizedBy(vmClass.asClassName())
+                        viewModelFactoryFqNameExperimental.asClassName(module).parameterizedBy(STAR)
                     )
                     .addAnnotation(Binds::class)
                     .addAnnotation(IntoMap::class)
@@ -127,9 +130,9 @@ class ContributesViewModelCodeGenerator : CodeGenerator {
         return createGeneratedFile(codeGenDir, generatedPackage, moduleClassName, content)
     }
 
-    private fun generateAssistedFactory(vmClass: ClassReference.Psi, codeGenDir: File, module: ModuleDescriptor, isAssisted: Boolean): GeneratedFile {
+    private fun generateAssistedFactoryExperimental(vmClass: ClassReference.Psi, codeGenDir: File, module: ModuleDescriptor): GeneratedFile {
         val generatedPackage = vmClass.packageFqName.toString()
-        val assistedFactoryClassName = "${vmClass.shortName}_AssistedFactory"
+        val assistedFactoryClassName = "${vmClass.shortName}_AssistedFactory_Experimental"
         val assistedConstructor = vmClass.constructors.singleOrNull { it.isAnnotatedWith(AssistedInject::class.fqName) }
         val assistedParameters = assistedConstructor?.parameters?.filter { it.isAnnotatedWith(Assisted::class.fqName) }
         if (assistedConstructor == null || assistedParameters.isNullOrEmpty()) {
@@ -150,10 +153,73 @@ class ContributesViewModelCodeGenerator : CodeGenerator {
 
             addType(
                 TypeSpec.interfaceBuilder(assistedFactoryClassName)
-                    .addSuperinterface(viewModelFactoryFqName.asClassName(module).parameterizedBy(vmClassName))
+                    .addSuperinterface(viewModelFactoryFqNameExperimental.asClassName(module).parameterizedBy(vmClassName))
                     .addAnnotation(AssistedFactory::class)
                     .addFunction(
                         createBuilder.build(),
+                    )
+                    .build(),
+            )
+        }
+        return createGeneratedFile(codeGenDir, generatedPackage, assistedFactoryClassName, content)
+    }
+
+    private fun generateModule(vmClass: ClassReference.Psi, codeGenDir: File, module: ModuleDescriptor): GeneratedFile {
+        val generatedPackage = vmClass.packageFqName.toString()
+        val moduleClassName = "${vmClass.shortName}_Module"
+        val scope = vmClass.annotations.single { it.fqName == ContributesViewModel::class.fqName }.scope()
+        val content = FileSpec.buildFile(generatedPackage, moduleClassName) {
+            addType(
+                TypeSpec.classBuilder(moduleClassName)
+                    .addModifiers(KModifier.ABSTRACT)
+                    .addAnnotation(Module::class)
+                    .addAnnotation(AnnotationSpec.builder(ContributesTo::class).addMember("%T::class", scope.asClassName()).build())
+                    .addFunction(
+                        FunSpec.builder("bind${vmClass.shortName}Factory")
+                            .addModifiers(KModifier.ABSTRACT)
+                            .addParameter("factory", ClassName(generatedPackage, "${vmClass.shortName}_AssistedFactory"))
+                            .returns(viewModelFactoryFqName.asClassName(module).parameterizedBy(STAR, STAR))
+                            .addAnnotation(Binds::class)
+                            .addAnnotation(IntoMap::class)
+                            .addAnnotation(AnnotationSpec.builder(viewModelKeyFqName.asClassName(module)).addMember("%T::class", vmClass.asClassName()).build())
+                            .build(),
+                    )
+                    .build(),
+            )
+        }
+        return createGeneratedFile(codeGenDir, generatedPackage, moduleClassName, content)
+    }
+
+    private fun generateAssistedFactory(vmClass: ClassReference.Psi, codeGenDir: File, module: ModuleDescriptor): GeneratedFile {
+        val generatedPackage = vmClass.packageFqName.toString()
+        val assistedFactoryClassName = "${vmClass.shortName}_AssistedFactory"
+        val constructor = vmClass.constructors.singleOrNull { it.isAnnotatedWith(AssistedInject::class.fqName) }
+        val assistedParameter = constructor?.parameters?.singleOrNull { it.isAnnotatedWith(Assisted::class.fqName) }
+        if (constructor == null || assistedParameter == null) {
+            throw AnvilCompilationException(
+                "${vmClass.fqName} must have an @AssistedInject constructor with @Assisted initialState: S parameter",
+                element = vmClass.clazz,
+            )
+        }
+        if (assistedParameter.name != "initialState") {
+            throw AnvilCompilationException(
+                "${vmClass.fqName} @Assisted parameter must be named initialState",
+                element = assistedParameter.parameter,
+            )
+        }
+        val vmClassName = vmClass.asClassName()
+        val stateClassName = assistedParameter.type().asTypeName()
+        val content = FileSpec.buildFile(generatedPackage, assistedFactoryClassName) {
+            addType(
+                TypeSpec.interfaceBuilder(assistedFactoryClassName)
+                    .addSuperinterface(viewModelFactoryFqName.asClassName(module).parameterizedBy(vmClassName, stateClassName))
+                    .addAnnotation(AssistedFactory::class)
+                    .addFunction(
+                        FunSpec.builder("create")
+                            .addModifiers(KModifier.OVERRIDE, KModifier.ABSTRACT)
+                            .addParameter("initialState", stateClassName)
+                            .returns(vmClassName)
+                            .build(),
                     )
                     .build(),
             )
