@@ -11,13 +11,13 @@ class ImgurGalleryPagingSource(
 ) : PagingSource<Int, GalleryItemModel>() {
 
     companion object {
-        private const val STARTING_INDEX = 1
+        private const val STARTING_INDEX = 0
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GalleryItemModel> {
         return try {
             val pageNumber = params.key ?: STARTING_INDEX
-            val response = imgurRepository.getGallery()
+            val response = imgurRepository.getGalleryList(pageNumber)
             val prevKey = if (pageNumber > STARTING_INDEX) pageNumber - 1 else null
             val nextKey = if (response.data.isNotEmpty()) pageNumber + 1 else null
 

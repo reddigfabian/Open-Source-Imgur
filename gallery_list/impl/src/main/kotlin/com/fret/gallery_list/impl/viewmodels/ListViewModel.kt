@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.fret.di.AppScope
 import com.fret.di.ContributesViewModel
+import com.fret.gallery_list.impl.ListScope
 import com.fret.gallery_list.impl.items.ImgurListItem
 import com.fret.gallery_list.impl.paging.ImgurGalleryPagingSource
 import com.fret.imgur_api.api.ImgurRepository
@@ -24,9 +25,9 @@ import javax.inject.Inject
 
 private const val TAG = "ListViewModel"
 
-@ContributesViewModel(AppScope::class)
+@ContributesViewModel(ListScope::class)
 class ListViewModel @AssistedInject constructor(
-//    val savedStateHandle: SavedStateHandle,
+//    val savedStateHandle: SavedStateHandle, //TODO
     @Assisted val initialState: String,
     private val imgurRepository: ImgurRepository,
     private val imgurAuthState: AuthState,

@@ -1,4 +1,4 @@
-package com.fret.gallery_list.impl
+package com.fret.utils
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

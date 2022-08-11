@@ -20,10 +20,10 @@ interface ImgurService {
         @Path("sort") window : String = "day",
         @Path("section") section : String = "hot",
         @Path("sort") sort : String = "viral",
-        @Path("sort") page : Int = 0,
+        @Path("page") page : Int = 0,
         @Query("showViral") showViral : Boolean = true,
         @Query("showMature") showMature : Boolean = false,
-        @Query("albumPreviews") albumPreviews : Boolean = false
+        @Query("albumPreviews") albumPreviews : Boolean = true
     ) : GalleryListResponse
 
     @GET("account/me/images")

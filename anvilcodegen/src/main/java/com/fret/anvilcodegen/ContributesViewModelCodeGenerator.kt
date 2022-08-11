@@ -31,9 +31,9 @@ import javax.inject.Inject
 @AutoService(CodeGenerator::class)
 class ContributesViewModelCodeGenerator : CodeGenerator {
     companion object {
-        private val viewModelFactoryFqNameExperimental = FqName("com.fret.gallery_list.impl.ViewModelFactoryExperimental")
-        private val viewModelFactoryFqName = FqName("com.fret.gallery_list.impl.ViewModelFactory")
-        private val viewModelKeyFqName = FqName("com.fret.gallery_list.impl.ViewModelKey")
+        private val viewModelFactoryFqNameExperimental = FqName("com.fret.utils.ViewModelFactoryExperimental")
+        private val viewModelFactoryFqName = FqName("com.fret.utils.ViewModelFactory")
+        private val viewModelKeyFqName = FqName("com.fret.utils.ViewModelKey")
     }
 
     override fun isApplicable(context: AnvilContext): Boolean = true
@@ -52,10 +52,10 @@ class ContributesViewModelCodeGenerator : CodeGenerator {
         val isAssisted = assistedInjectConstructor != null
 
         val result = mutableListOf<GeneratedFile>()
-        result.add(generateModuleExperimental(vmClass, codeGenDir, module, isAssisted))
-        if (isAssisted) {
-            result.add(generateAssistedFactoryExperimental(vmClass, codeGenDir, module))
-        }
+//        result.add(generateModuleExperimental(vmClass, codeGenDir, module, isAssisted))
+//        if (isAssisted) {
+//            result.add(generateAssistedFactoryExperimental(vmClass, codeGenDir, module))
+//        }
         result.add(generateModule(vmClass, codeGenDir, module))
         result.add(generateAssistedFactory(vmClass, codeGenDir, module))
         return result

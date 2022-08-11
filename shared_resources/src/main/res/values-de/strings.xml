@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Open Source Imgur</string>
+    <string name="my_images">Meine Bilder</string>
+    <string name="most_viral">Am Viralsten</string>
+</resources>

@@ -12,5 +12,7 @@
         <argument android:name="@string/nav_arg_detail"
             app:argType="string"
             app:nullable="false"/>
+        <deepLink
+            app:uri="@string/deeplink_detail"/>
     </fragment>
 </navigation>

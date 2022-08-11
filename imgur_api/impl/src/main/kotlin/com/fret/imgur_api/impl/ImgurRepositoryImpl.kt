@@ -19,8 +19,11 @@ class ImgurRepositoryImpl @Inject constructor(
         return imgurService.getApiCredits("Client-ID ${BuildConfig.IMGUR_CLIENT_ID}")
     }
 
-    override suspend fun getGallery() : GalleryListResponse {
-        return imgurService.getGallery("Client-ID ${BuildConfig.IMGUR_CLIENT_ID}")
+    override suspend fun getGalleryList(pageNumber: Int) : GalleryListResponse {
+        return imgurService.getGallery(
+            accessToken = "Client-ID ${BuildConfig.IMGUR_CLIENT_ID}",
+            page = pageNumber
+        )
     }
 
     override suspend fun getMyAccountImages(accessToken: String): ImageListResponse {

@@ -7,13 +7,17 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvDetail"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Hello"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="16dp"
+        android:textColor="@color/design_default_color_on_primary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="start"
+        tools:text="Item N" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

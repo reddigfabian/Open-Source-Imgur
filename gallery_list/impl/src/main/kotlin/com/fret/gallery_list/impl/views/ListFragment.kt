@@ -3,27 +3,29 @@ package com.fret.gallery_list.impl.views
 //import com.fret.ktxauth.*
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.fret.gallery_list.impl.*
 import com.fret.gallery_list.impl.adapters.ImgurListAdapter
 import com.fret.gallery_list.impl.databinding.FragmentListBinding
 import com.fret.gallery_list.impl.items.ImgurListItem
 import com.fret.gallery_list.impl.viewmodels.ListViewModel
-import com.fret.imgur_api.api.ImgurRepository
 import com.fret.utils.DaggerComponentOwner
+import com.fret.utils.bindingViewModelFactory
 import com.fret.utils.bindings
 import com.fret.utils.fragmentComponent
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import net.openid.appauth.AuthState
@@ -44,13 +46,17 @@ class ListFragment : Fragment(), DaggerComponentOwner,  ImgurListAdapter.ImgurLi
         app.bindings<ListComponent.ParentBindings>().listComponentBuilder().create()
     }
 
+//    override val daggerComponent: ListComponent by lazy {
+//        requireContext().applicationContext.bindings<ListComponent.ParentBindings>().listComponentBuilder().create()
+//    }
+
     private val imgurListAdapter : ImgurListAdapter by lazy { ImgurListAdapter(this) }
 
     @Inject lateinit var imgurKtAuthRequest: AuthorizationRequest
     @Inject lateinit var imgurKtAuthService: AuthorizationService
     @Inject lateinit var imgurAuthState: AuthState
 
-    private val listViewModel: ListViewModel by bindingViewModelFactory()
+    private val listViewModel: ListViewModel by bindingViewModelFactory("Test")
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,11 +65,14 @@ class ListFragment : Fragment(), DaggerComponentOwner,  ImgurListAdapter.ImgurLi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
+        // TODO: This toast is a reminder to replace initialState String with savedStateHandle and to make a more flexible code generator
+        Toast.makeText(requireContext(), listViewModel.initialState, Toast.LENGTH_SHORT).show()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().title = getString(com.fret.shared_resources.R.string.most_viral)
         initMenu()
         initList()
     }
@@ -93,12 +102,27 @@ class ListFragment : Fragment(), DaggerComponentOwner,  ImgurListAdapter.ImgurLi
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
-        // TODO: This toast is a reminder to replace initialState String with savedStateHandle and to make a more flexible code generator
-//        Toast.makeText(requireContext(), listViewModel.initialState, Toast.LENGTH_SHORT).show()
     }
 
     override fun onImgurItemClick(item: ImgurListItem) {
+        val deeplinkStr = getString(com.fret.gallery_detail.api.R.string.deeplink_detail)
+        val navArgDetail = getString(com.fret.gallery_detail.api.R.string.nav_arg_detail)
+        findNavController().navigate(deeplinkStr.toUri().replaceQueryParam(navArgDetail, item.title))
+    }
 
+    // TODO: Move to utils module
+    private fun Uri.replaceQueryParam(key : String, newValue : String?) : Uri {
+        val queryParameterNames = queryParameterNames
+        val newUriBuilder = buildUpon().clearQuery()
+        queryParameterNames.forEach {
+            newUriBuilder.appendQueryParameter(it,
+                when (it) {
+                    key -> newValue
+                    else -> getQueryParameter(it)
+                }
+            )
+        }
+        return newUriBuilder.build()
     }
 
     fun myImagesClick() {
