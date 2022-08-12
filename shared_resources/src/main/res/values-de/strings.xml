@@ -4,6 +4,10 @@
     ]
 >
 <resources>
-    <string name="app_name">Open Source Imgur</string>
+    <string name="app_name">Quelloffenes Imgur</string>
     <string name="my_images">Meine Bilder</string>
+
+    <string name="language_select_flag">🇩🇪</string>
+    <string name="language_select_flag_en">🇺🇸 Englisch</string>
+    <string name="language_select_flag_de">🇩🇪 Deutsch</string>
 </resources>

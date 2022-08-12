@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.fret.imgur_api.api.ImgurRepository
 import com.fret.imgur_api.api.models.gallery.GalleryItemModel
 
+// TODO: Add more params for gallery api call to this paging source (sort, section, window, etc.) 
 class GalleryListPagingSource(
     private val pageSize: Int,
     private val imgurRepository: ImgurRepository
@@ -17,7 +18,7 @@ class GalleryListPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GalleryItemModel> {
         return try {
             val pageNumber = params.key ?: STARTING_INDEX
-            val response = imgurRepository.getGallery(pageNumber)
+            val response = imgurRepository.getGallery(page = pageNumber)
             val prevKey = if (pageNumber > STARTING_INDEX) pageNumber - 1 else null
             val nextKey = if (response.data.isNotEmpty()) pageNumber + 1 else null
 

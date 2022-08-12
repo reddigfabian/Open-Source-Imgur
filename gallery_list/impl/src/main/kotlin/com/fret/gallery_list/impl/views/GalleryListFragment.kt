@@ -8,7 +8,9 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
+import androidx.core.os.LocaleListCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -30,6 +32,7 @@ import com.fret.utils.fragmentComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import net.openid.appauth.*
+import java.util.*
 import javax.inject.Inject
 
 private const val TAG = "ListFragment"

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Open Source Imgur</string>
     <string name="my_images">My Images</string>
+
+    <string name="language_select_flag">🇺🇸</string>
+    <string name="language_select_flag_en">🇺🇸 English</string>
+    <string name="language_select_flag_de">🇩🇪 German</string>
 </resources>

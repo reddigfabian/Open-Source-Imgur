@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
+import androidx.core.view.MenuHost
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.fret.gallery_detail.impl.adapters.GalleryDetailAdapter
@@ -14,14 +17,19 @@ import com.fret.gallery_detail.impl.databinding.FragmentDetailBinding
 import com.fret.gallery_detail.impl.di.GalleryDetailBindings
 import com.fret.gallery_detail.impl.di.GalleryDetailComponent
 import com.fret.gallery_detail.impl.viewmodels.GalleryDetailViewModel
+import com.fret.menus.language.LanguageMenuProvider
+import com.fret.menus.language.LanguageSelectListenerImpl
 import com.fret.utils.DaggerComponentOwner
 import com.fret.utils.bindingViewModelFactory
 import com.fret.utils.bindings
 import com.fret.utils.fragmentComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.*
 
-class GalleryDetailFragment : Fragment(), DaggerComponentOwner {
+class GalleryDetailFragment : Fragment(),
+    DaggerComponentOwner
+{
     private var _binding: FragmentDetailBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -48,7 +56,20 @@ class GalleryDetailFragment : Fragment(), DaggerComponentOwner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initMenu()
         initList()
+    }
+
+    private fun initMenu() {
+        (requireActivity() as MenuHost).addMenuProvider(
+            LanguageMenuProvider(LanguageSelectListenerImpl()), // TODO: Replace with injected version or something
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
+    }
+
+    private fun setLocale(locale: Locale) {
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(locale))
     }
 
     private fun initList() {

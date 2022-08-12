@@ -51,7 +51,7 @@ dependencies {
     implementation 'net.openid:appauth:0.11.1'
     implementation 'io.coil-kt:coil:2.1.0'
     implementation 'io.coil-kt:coil-gif:2.1.0'
-
+    implementation 'androidx.appcompat:appcompat:1.6.0-beta01'
 
     api project(':gallery_list:api')
     implementation project(":gallery_detail:api")

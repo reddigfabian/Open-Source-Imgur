@@ -8,6 +8,8 @@ import com.fret.imgur_api.api.responses.api.APICreditsResponse
 import com.fret.imgur_api.api.responses.gallery.GalleryListResponse
 import com.fret.imgur_api.api.responses.image.ImageListResponse
 import com.squareup.anvil.annotations.ContributesBinding
+import retrofit2.http.Path
+import retrofit2.http.Query
 import javax.inject.Inject
 
 @SingleIn(AppScope::class)
@@ -22,8 +24,25 @@ class ImgurRepositoryImpl @Inject constructor(
         return imgurService.getApiCredits(clientID)
     }
 
-    override suspend fun getGallery(pageNumber: Int): GalleryListResponse {
-        return imgurService.getGallery(clientID = clientID, page = pageNumber)
+    override suspend fun getGallery(
+        section : String,
+        sort : String,
+        page : Int,
+        window : String,
+        showViral : Boolean,
+        showMature : Boolean,
+        albumPreviews : Boolean
+    ): GalleryListResponse {
+        return imgurService.getGallery(
+            clientID,
+            section,
+            sort,
+            page,
+            window,
+            showViral,
+            showMature,
+            albumPreviews
+        )
     }
 
     override suspend fun getAlbumImages(albumHash: String) : AlbumImagesResponse {
