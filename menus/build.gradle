@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'com.squareup.anvil'
 }
 
 android {
@@ -29,6 +30,9 @@ android {
         jvmTarget = '1.8'
     }
 }
+anvil{
+    generateDaggerFactories = true
+}
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
@@ -36,6 +40,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
 
     implementation project(':shared_resources')
+    implementation project(':di')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

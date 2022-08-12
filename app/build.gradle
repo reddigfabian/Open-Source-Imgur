@@ -95,6 +95,7 @@ dependencies {
     implementation project(":shared_resources")
     implementation project(":di")
     implementation project(":utils")
+    implementation project(":menus")
     implementation project(":gallery_list:impl")
     implementation project(":gallery_detail:impl")
     implementation project(":imgur_api:impl")

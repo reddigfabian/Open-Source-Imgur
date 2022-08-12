@@ -18,7 +18,6 @@ import com.fret.gallery_detail.impl.di.GalleryDetailBindings
 import com.fret.gallery_detail.impl.di.GalleryDetailComponent
 import com.fret.gallery_detail.impl.viewmodels.GalleryDetailViewModel
 import com.fret.menus.language.LanguageMenuProvider
-import com.fret.menus.language.LanguageSelectListenerImpl
 import com.fret.utils.DaggerComponentOwner
 import com.fret.utils.bindingViewModelFactory
 import com.fret.utils.bindings
@@ -26,6 +25,7 @@ import com.fret.utils.fragmentComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 class GalleryDetailFragment : Fragment(),
     DaggerComponentOwner
@@ -33,6 +33,9 @@ class GalleryDetailFragment : Fragment(),
     private var _binding: FragmentDetailBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var languageMenuProvider: LanguageMenuProvider
 
     override val daggerComponent: GalleryDetailComponent by fragmentComponent { _, app ->
         app.bindings<GalleryDetailComponent.ParentBindings>().detailComponentBuilder().create()
@@ -62,7 +65,7 @@ class GalleryDetailFragment : Fragment(),
 
     private fun initMenu() {
         (requireActivity() as MenuHost).addMenuProvider(
-            LanguageMenuProvider(LanguageSelectListenerImpl()), // TODO: Replace with injected version or something
+            languageMenuProvider,
             viewLifecycleOwner,
             Lifecycle.State.RESUMED
         )

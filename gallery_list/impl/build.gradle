@@ -58,6 +58,7 @@ dependencies {
     implementation project(":shared_resources")
     implementation project(':di')
     implementation project(':utils')
+    implementation project(':menus')
     implementation project(':imgur_api:api')
 
     testImplementation 'junit:junit:4.13.2'

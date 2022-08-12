@@ -25,6 +25,7 @@ import com.fret.gallery_list.impl.di.GalleryListBindings
 import com.fret.gallery_list.impl.di.GalleryListComponent
 import com.fret.gallery_list.impl.items.GalleryListItem
 import com.fret.gallery_list.impl.viewmodels.GalleryListViewModel
+import com.fret.menus.language.LanguageMenuProvider
 import com.fret.utils.DaggerComponentOwner
 import com.fret.utils.bindingViewModelFactory
 import com.fret.utils.bindings
@@ -51,12 +52,17 @@ class GalleryListFragment : Fragment(), DaggerComponentOwner,  GalleryListAdapte
     @Inject lateinit var imgurKtAuthRequest: AuthorizationRequest
     @Inject lateinit var imgurKtAuthService: AuthorizationService
     @Inject lateinit var imgurAuthState: AuthState
+    @Inject lateinit var languageMenuProvider: LanguageMenuProvider
 
     private val galleryListViewModel: GalleryListViewModel by bindingViewModelFactory()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         bindings<GalleryListBindings>().inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -77,10 +83,16 @@ class GalleryListFragment : Fragment(), DaggerComponentOwner,  GalleryListAdapte
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                myImagesClick()
-                return true
+                return when (menuItem.itemId) {
+                    R.id.menuActionAccount-> {
+                        myImagesClick()
+                        true
+                    }
+                    else -> false
+                }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        (requireActivity() as MenuHost).addMenuProvider(languageMenuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun initList() {
