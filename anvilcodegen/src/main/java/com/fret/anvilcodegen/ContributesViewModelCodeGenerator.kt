@@ -59,7 +59,7 @@ class ContributesViewModelCodeGenerator : CodeGenerator {
         result.add(generateAssistedFactory(vmClass, codeGenDir, module))
         return result
     }
-//
+
 //    private fun generateModuleExperimental(vmClass: ClassReference.Psi, codeGenDir: File, module: ModuleDescriptor, isAssisted: Boolean): GeneratedFile {
 //        val injectConstructor = vmClass.constructors.singleOrNull { it.isAnnotatedWith(Inject::class.fqName) }
 //        val generatedPackage = vmClass.packageFqName.toString()

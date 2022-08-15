@@ -2,29 +2,26 @@ package com.fret.gallery_list.impl.views
 
 import android.app.Activity
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.net.toUri
-import androidx.core.os.LocaleListCompat
 import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.fret.gallery_list.impl.R
+import com.fret.imgur_album.api.AlbumNavGraphArgs
 import com.fret.gallery_list.impl.adapters.GalleryListAdapter
 import com.fret.gallery_list.impl.databinding.FragmentGalleryListBinding
 import com.fret.gallery_list.impl.di.GalleryListBindings
 import com.fret.gallery_list.impl.di.GalleryListComponent
 import com.fret.gallery_list.impl.items.GalleryListItem
 import com.fret.gallery_list.impl.viewmodels.GalleryListViewModel
+import com.fret.menus.account.AccountMenuClickListener
+import com.fret.menus.account.AccountMenuProvider
 import com.fret.menus.language.LanguageMenuProvider
 import com.fret.utils.DaggerComponentOwner
 import com.fret.utils.bindingViewModelFactory
@@ -33,12 +30,12 @@ import com.fret.utils.fragmentComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import net.openid.appauth.*
-import java.util.*
 import javax.inject.Inject
 
 private const val TAG = "ListFragment"
 
-class GalleryListFragment : Fragment(), DaggerComponentOwner,  GalleryListAdapter.GalleryListItemClickListener {
+class GalleryListFragment : Fragment(), DaggerComponentOwner,  GalleryListAdapter.GalleryListItemClickListener,
+    AccountMenuClickListener {
     private var _binding: FragmentGalleryListBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -52,17 +49,12 @@ class GalleryListFragment : Fragment(), DaggerComponentOwner,  GalleryListAdapte
     @Inject lateinit var imgurKtAuthRequest: AuthorizationRequest
     @Inject lateinit var imgurKtAuthService: AuthorizationService
     @Inject lateinit var imgurAuthState: AuthState
-    @Inject lateinit var languageMenuProvider: LanguageMenuProvider
 
     private val galleryListViewModel: GalleryListViewModel by bindingViewModelFactory()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         bindings<GalleryListBindings>().inject(this)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -77,22 +69,16 @@ class GalleryListFragment : Fragment(), DaggerComponentOwner,  GalleryListAdapte
     }
 
     private fun initMenu() {
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.list_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.menuActionAccount-> {
-                        myImagesClick()
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-        (requireActivity() as MenuHost).addMenuProvider(languageMenuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        (requireActivity() as MenuHost).addMenuProvider(
+            LanguageMenuProvider(),
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
+        (requireActivity() as MenuHost).addMenuProvider(
+            AccountMenuProvider(this),
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
     }
 
     private fun initList() {
@@ -102,40 +88,10 @@ class GalleryListFragment : Fragment(), DaggerComponentOwner,  GalleryListAdapte
                 galleryListAdapter.submitData(it)
             }
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            galleryListViewModel.toast.flowWithLifecycle(viewLifecycleOwner.lifecycle).collectLatest {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     override fun onGalleryItemClick(item: GalleryListItem) {
-        val deeplinkStr = getString(com.fret.gallery_detail.api.R.string.deeplink_detail)
-        val navArgDetail = getString(com.fret.gallery_detail.api.R.string.nav_arg_detail)
-        findNavController().navigate(deeplinkStr.toUri().replaceQueryParam(navArgDetail, item.id))
-    }
-
-    // TODO: Move to utils module
-    private fun Uri.replaceQueryParam(key : String, newValue : String?) : Uri {
-        val queryParameterNames = queryParameterNames
-        val newUriBuilder = buildUpon().clearQuery()
-        queryParameterNames.forEach {
-            newUriBuilder.appendQueryParameter(it,
-                when (it) {
-                    key -> newValue
-                    else -> getQueryParameter(it)
-                }
-            )
-        }
-        return newUriBuilder.build()
-    }
-
-    fun myImagesClick() {
-        if (!imgurAuthState.isAuthorized) {
-            doImgurAuth()
-        } else {
-            galleryListViewModel.test()
-        }
+        findNavController().navigate(com.fret.imgur_album.api.R.id.album_nav_graph, AlbumNavGraphArgs(item.id).toBundle())
     }
 
     private val authResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -165,5 +121,13 @@ class GalleryListFragment : Fragment(), DaggerComponentOwner,  GalleryListAdapte
 
     private fun doImgurAuth() {
         authResult.launch(imgurKtAuthService.getAuthorizationRequestIntent(imgurKtAuthRequest))
+    }
+
+    override fun accountMenuClicked() {
+        if (!imgurAuthState.isAuthorized) {
+            doImgurAuth()
+        } else {
+//            galleryListViewModel.test()
+        }
     }
 }

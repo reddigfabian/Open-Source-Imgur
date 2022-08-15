@@ -97,7 +97,7 @@ dependencies {
     implementation project(":utils")
     implementation project(":menus")
     implementation project(":gallery_list:impl")
-    implementation project(":gallery_detail:impl")
+    implementation project(":imgur_album:impl")
     implementation project(":imgur_api:impl")
     implementation project(":imgur_auth:impl")
 

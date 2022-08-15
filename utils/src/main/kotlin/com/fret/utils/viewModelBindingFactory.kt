@@ -12,6 +12,11 @@ inline fun <reified VM : ViewModel> Fragment.bindingViewModelFactory(noinline st
     (bindings<LibUiBindings>().viewModelFactories()[VM::class.java] as ViewModelFactory<VM, String?>).create(stringProducer.invoke())
 }
 
+inline fun <reified VM : ViewModel> Fragment.bindingViewModelFactoryB(stringProducer : Lazy<String>): Lazy<VM> = lazy {
+    val t: String by stringProducer
+    (bindings<LibUiBindings>().viewModelFactories()[VM::class.java] as ViewModelFactory<VM, String?>).create(t)
+}
+
 inline fun <reified VM : ViewModel> Fragment.bindingViewModelFactory(args: Bundle?): Lazy<VM> = lazy {
     (bindings<LibUiBindings>().viewModelFactories()[VM::class.java] as ViewModelFactory<VM, Bundle?>).create(args)
 }

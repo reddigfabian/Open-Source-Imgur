@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/album_nav_graph"
+    app:startDestination="@id/albumFragment">
+
+    <fragment
+        android:id="@+id/albumFragment"
+        android:name="com.fret.imgur_album.impl.views.AlbumFragment"
+        tools:layout="@layout/fragment_album">
+        <argument android:name="albumHash"
+            app:argType="string"
+            app:nullable="false"/>
+    </fragment>
+</navigation>

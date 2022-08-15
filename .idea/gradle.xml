@@ -14,12 +14,12 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/constants" />
             <option value="$PROJECT_DIR$/di" />
-            <option value="$PROJECT_DIR$/gallery_detail" />
-            <option value="$PROJECT_DIR$/gallery_detail/api" />
-            <option value="$PROJECT_DIR$/gallery_detail/impl" />
             <option value="$PROJECT_DIR$/gallery_list" />
             <option value="$PROJECT_DIR$/gallery_list/api" />
             <option value="$PROJECT_DIR$/gallery_list/impl" />
+            <option value="$PROJECT_DIR$/imgur_album" />
+            <option value="$PROJECT_DIR$/imgur_album/api" />
+            <option value="$PROJECT_DIR$/imgur_album/impl" />
             <option value="$PROJECT_DIR$/imgur_api" />
             <option value="$PROJECT_DIR$/imgur_api/api" />
             <option value="$PROJECT_DIR$/imgur_api/impl" />
@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/imgur_auth/impl" />
             <option value="$PROJECT_DIR$/menus" />
             <option value="$PROJECT_DIR$/shared_resources" />
+            <option value="$PROJECT_DIR$/usf" />
             <option value="$PROJECT_DIR$/utils" />
           </set>
         </option>

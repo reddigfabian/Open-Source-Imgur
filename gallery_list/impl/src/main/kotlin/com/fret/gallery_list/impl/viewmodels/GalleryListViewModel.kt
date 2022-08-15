@@ -37,8 +37,6 @@ class GalleryListViewModel @AssistedInject constructor(
         GalleryListPagingSource(PAGE_SIZE, imgurRepository)
     }
 
-    val toast = MutableSharedFlow<String>()
-
     val imgurItems: Flow<PagingData<GalleryListItem>> = Pager(
         config = PagingConfig(
             pageSize = PAGE_SIZE,
@@ -58,27 +56,26 @@ class GalleryListViewModel @AssistedInject constructor(
             }
         }
         .cachedIn(viewModelScope)
-
-    fun test() {
-        imgurAuthState.performActionWithFreshTokens(imgurKtAuthService, object : AuthState.AuthStateAction {
-            override fun execute(
-                accessToken: String?,
-                idToken: String?,
-                ex: AuthorizationException?
-            ) {
-                if (ex != null) {
-                    Log.d(TAG, "exception: $ex")
-                    return
-                } else {
-                    accessToken?.let {
-                        viewModelScope.launch {
-                            val myAccountImages = imgurRepository.getMyAccountImages(it)
-                            toast.emit(myAccountImages.data.size.toString())
-                        }
-                    }
-                }
-            }
-
-        })
-    }
+//
+//    fun test() {
+//        imgurAuthState.performActionWithFreshTokens(imgurKtAuthService, object : AuthState.AuthStateAction {
+//            override fun execute(
+//                accessToken: String?,
+//                idToken: String?,
+//                ex: AuthorizationException?
+//            ) {
+//                if (ex != null) {
+//                    Log.d(TAG, "exception: $ex")
+//                    return
+//                } else {
+//                    accessToken?.let {
+//                        viewModelScope.launch {
+//                            val myAccountImages = imgurRepository.getMyAccountImages(it)
+//                        }
+//                    }
+//                }
+//            }
+//
+//        })
+//    }
 }

@@ -10,8 +10,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import java.util.*
 import javax.inject.Inject
 
-@ContributesBinding(AppScope::class)
-class LanguageMenuProvider @Inject constructor(private val languageSelectListener: LanguageSelectListener): MenuProvider {
+class LanguageMenuProvider(private val languageSelectListener: LanguageSelectListener = LanguageSelectListener()): MenuProvider {
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.album_menu, menu)

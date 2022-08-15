@@ -41,7 +41,7 @@ data class ImageModel(
     val deleteHash: String?,
     val name: String?,
     val section: String?,
-    val link: String?,
+    val link: String,
     val gifv: String?,
     val mp4: String?,
     val mp4_size: Int?,
