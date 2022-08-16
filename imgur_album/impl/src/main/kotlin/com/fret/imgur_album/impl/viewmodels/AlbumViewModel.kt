@@ -22,38 +22,31 @@ class AlbumViewModel @AssistedInject constructor(
 ) : ViewModel() {
 
     private val events = MutableSharedFlow<AlbumEvent>()
-    private val results: Flow<AlbumResult> = events.map {
+    private val results = events.map {
         when (it) {
             AlbumEvent.ScreenLoadEvent -> onScreenLoad()
             AlbumEvent.AccountMenuClickedEvent -> onAccountMenuClicked()
         }
     }
-    private val _viewState = MutableStateFlow(AlbumViewState())
-    val viewState: StateFlow<AlbumViewState> get() = _viewState
-    private val _viewEffects = MutableSharedFlow<AlbumViewEffect>()
-    val viewEffects: SharedFlow<AlbumViewEffect> get() = _viewEffects
 
-    init {
-        viewModelScope.launch {
-            results.collect { result ->
-                _viewState.update { prevState ->
-                    when (result) {
-                        is AlbumResult.ScreenLoadResult -> {
-                            prevState.copy(
-                                errorMessage = result.error,
-                                imageListItems = result.imageList
-                            )
-                        }
-                        else -> prevState
-                    }
-                }
-                when (result) {
-                    AlbumResult.AccountMenuClickedResult -> {
-                        _viewEffects.emit(AlbumViewEffect.AccountMenuClickedEffect)
-                    }
-                    else -> {}
-                }
+    val viewState = results.scan(AlbumViewState()) { prevState, result ->
+        when (result) {
+            is AlbumResult.ScreenLoadResult -> {
+                prevState.copy(
+                    errorMessage = result.error,
+                    imageListItems = result.imageList
+                )
             }
+            else -> prevState
+        }
+    }.distinctUntilChanged()
+
+    val viewEffects = results.mapNotNull { result ->
+        when (result) {
+            AlbumResult.AccountMenuClickedResult -> {
+                AlbumViewEffect.AccountMenuClickedEffect
+            }
+            else -> null
         }
     }
 
