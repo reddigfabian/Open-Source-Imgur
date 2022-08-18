@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Open Source Imgur</string>
-    <string name="my_images">My Images</string>
+    <string name="my_account">My Account</string>
+    <string name="popular">Popular</string>
 
     <string name="language_select_flag">🇺🇸</string>
-    <string name="language_select_flag_en">🇺🇸 English</string>
-    <string name="language_select_flag_de">🇩🇪 German</string>
+
+    <string name="language_select_flag_en" translatable="false">🇺🇸 English</string>
+    <string name="language_select_flag_de" translatable="false">🇩🇪 Deutsch</string>
 </resources>

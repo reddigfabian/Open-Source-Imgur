@@ -1,5 +1,8 @@
 package com.fret.imgur_api.impl
 
+import com.fret.imgur_api.api.models.params.Section
+import com.fret.imgur_api.api.models.params.Sort
+import com.fret.imgur_api.api.models.params.Window
 import com.fret.imgur_api.api.responses.album.AlbumImagesResponse
 import com.fret.imgur_api.api.responses.api.APICreditsResponse
 import com.fret.imgur_api.api.responses.gallery.GalleryListResponse
@@ -18,10 +21,10 @@ interface ImgurService {
     @GET("gallery/{section}/{sort}/{page}/{window}")
     suspend fun getGallery(
         @Header("Authorization") clientID : String,
-        @Path("section") section : String = "hot",
-        @Path("sort") sort : String = "viral",
+        @Path("section") section : Section = Section.hot,
+        @Path("sort") sort : Sort = Sort.viral,
         @Path("page") page : Int = 0,
-        @Path("window") window : String = "day",
+        @Path("window") window : Window = Window.day,
         @Query("showViral") showViral : Boolean = true,
         @Query("mature") showMature : Boolean = false,
         @Query("album_previews") albumPreviews : Boolean = false

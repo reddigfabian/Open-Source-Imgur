@@ -26,7 +26,7 @@
             <option value="$PROJECT_DIR$/imgur_auth" />
             <option value="$PROJECT_DIR$/imgur_auth/api" />
             <option value="$PROJECT_DIR$/imgur_auth/impl" />
-            <option value="$PROJECT_DIR$/menus" />
+            <option value="$PROJECT_DIR$/shared_menus" />
             <option value="$PROJECT_DIR$/shared_resources" />
             <option value="$PROJECT_DIR$/usf" />
             <option value="$PROJECT_DIR$/utils" />

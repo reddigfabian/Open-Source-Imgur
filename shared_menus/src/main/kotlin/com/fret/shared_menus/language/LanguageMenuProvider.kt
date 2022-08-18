@@ -1,4 +1,4 @@
-package com.fret.menus.language
+package com.fret.shared_menus.language
 
 import android.view.Menu
 import android.view.MenuInflater

@@ -1,5 +1,8 @@
 package com.fret.imgur_api.api
 
+import com.fret.imgur_api.api.models.params.Section
+import com.fret.imgur_api.api.models.params.Sort
+import com.fret.imgur_api.api.models.params.Window
 import com.fret.imgur_api.api.responses.album.AlbumImagesResponse
 import com.fret.imgur_api.api.responses.api.APICreditsResponse
 import com.fret.imgur_api.api.responses.gallery.GalleryListResponse
@@ -9,10 +12,10 @@ interface ImgurRepository {
     suspend fun getApiCredits(): APICreditsResponse
 
     suspend fun getGallery(
-        section : String = "hot",
-        sort : String = "viral",
+        section : Section = Section.hot,
+        sort : Sort = Sort.viral,
         page : Int = 0,
-        window : String = "day",
+        window : Window = Window.day,
         showViral : Boolean = true,
         showMature : Boolean = false,
         albumPreviews : Boolean = false

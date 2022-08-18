@@ -30,4 +30,5 @@ android {
 }
 
 dependencies {
+    api 'net.openid:appauth:0.11.1'
 }

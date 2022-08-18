@@ -41,6 +41,8 @@ dependencies {
 
     implementation project(':shared_resources')
     implementation project(':di')
+    implementation project(':usf')
+    implementation project(':imgur_auth:api')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

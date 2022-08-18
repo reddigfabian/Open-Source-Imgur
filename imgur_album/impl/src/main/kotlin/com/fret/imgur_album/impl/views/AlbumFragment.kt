@@ -20,8 +20,8 @@ import com.fret.imgur_album.impl.di.AlbumComponent
 import com.fret.imgur_album.impl.usf.AlbumEvent
 import com.fret.imgur_album.impl.usf.AlbumViewEffect
 import com.fret.imgur_album.impl.viewmodels.AlbumViewModel
-import com.fret.menus.account.AccountMenuProvider
-import com.fret.menus.language.LanguageMenuProvider
+import com.fret.shared_menus.account.AccountMenuProvider
+import com.fret.shared_menus.language.LanguageMenuProvider
 import com.fret.utils.DaggerComponentOwner
 import com.fret.utils.bindingViewModelFactory
 import com.fret.utils.bindings
@@ -93,12 +93,12 @@ class AlbumFragment : Fragment(),
             viewLifecycleOwner,
             Lifecycle.State.RESUMED
         )
-        (requireActivity() as MenuHost).addMenuProvider(
-            AccountMenuProvider {
-                albumViewModel.processEvent(AlbumEvent.AccountMenuClickedEvent)
-            },
-            viewLifecycleOwner,
-            Lifecycle.State.RESUMED
-        )
+//        (requireActivity() as MenuHost).addMenuProvider(
+//            AccountMenuProvider {
+//                albumViewModel.processEvent(AlbumEvent.AccountMenuClickedEvent)
+//            },
+//            viewLifecycleOwner,
+//            Lifecycle.State.RESUMED
+//        )
     }
 }

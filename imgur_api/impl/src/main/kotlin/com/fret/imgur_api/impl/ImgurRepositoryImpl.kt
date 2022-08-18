@@ -3,6 +3,9 @@ package com.fret.imgur_api.impl
 import com.fret.di.AppScope
 import com.fret.di.SingleIn
 import com.fret.imgur_api.api.ImgurRepository
+import com.fret.imgur_api.api.models.params.Section
+import com.fret.imgur_api.api.models.params.Sort
+import com.fret.imgur_api.api.models.params.Window
 import com.fret.imgur_api.api.responses.album.AlbumImagesResponse
 import com.fret.imgur_api.api.responses.api.APICreditsResponse
 import com.fret.imgur_api.api.responses.gallery.GalleryListResponse
@@ -25,10 +28,10 @@ class ImgurRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getGallery(
-        section : String,
-        sort : String,
+        section : Section,
+        sort : Sort,
         page : Int,
-        window : String,
+        window : Window,
         showViral : Boolean,
         showMature : Boolean,
         albumPreviews : Boolean

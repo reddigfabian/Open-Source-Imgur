@@ -8,38 +8,46 @@ import com.fret.di.AppScope
 import com.fret.di.ContributesViewModel
 import com.fret.gallery_list.impl.items.GalleryListItem
 import com.fret.gallery_list.impl.paging.GalleryListPagingSource
+import com.fret.gallery_list.impl.usf.GalleryListEffect
 import com.fret.gallery_list.impl.usf.GalleryListEvent
 import com.fret.gallery_list.impl.usf.GalleryListResult
 import com.fret.gallery_list.impl.usf.GalleryListViewState
-import com.fret.gallery_list.impl.usf.GalleryViewEffect
-import com.fret.imgur_api.api.ImgurRepository
+import com.fret.imgur_api.api.models.params.Section
+import com.fret.imgur_api.api.models.params.Sort
+import com.fret.shared_menus.account.AccountMenuDelegate
+import com.fret.shared_menus.account.DefaultAccountMenuDelegate
+import com.fret.shared_menus.account.usf.AccountMenuEffect
+import com.fret.shared_menus.account.usf.AccountMenuEvent
+import com.fret.usf.UsfEvent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import net.openid.appauth.AuthState
-import net.openid.appauth.AuthorizationException
-import net.openid.appauth.AuthorizationService
 
 private const val TAG = "ListViewModel"
 
 @ContributesViewModel(AppScope::class)
 class GalleryListViewModel @AssistedInject constructor(
     @Assisted val args: String,
-    private val imgurRepository: ImgurRepository,
-    private val imgurAuthState: AuthState,
-    private val imgurKtAuthService: AuthorizationService
-) : ViewModel() {
+    private val galleryListPagingSourceFactory: GalleryListPagingSource.Factory,
+    defaultAccountMenuDelegate: DefaultAccountMenuDelegate
+) : ViewModel(), AccountMenuDelegate by defaultAccountMenuDelegate {
 
     companion object {
-        private const val PAGE_SIZE = 10
+        private const val PAGE_SIZE = 60 //Imgur's api doesn't support setting a page size and so we just set this number based on the amount of data the api seems to return.
     }
+
+    var section = Section.hot
+    var sort = Sort.viral
 
     private val imgurPagingSourceFactory = InvalidatingPagingSourceFactory {
-        GalleryListPagingSource(PAGE_SIZE, imgurRepository)
+        galleryListPagingSourceFactory.create(
+            section = section,
+            sort = sort
+        )
     }
 
-    private val galleryListItems: Flow<GalleryListEvent.GalleryListItemPageLoadEvent> = Pager(
+    private val pagingLoadEvents = Pager(
         config = PagingConfig(
             pageSize = PAGE_SIZE,
             enablePlaceholders = true
@@ -58,41 +66,51 @@ class GalleryListViewModel @AssistedInject constructor(
             }
         }
         .cachedIn(viewModelScope)
-        .map { GalleryListEvent.GalleryListItemPageLoadEvent(it) }
+        .map {
+            GalleryListEvent.GalleryListItemPageLoadEvent(it)
+        }
 
-
-    private val events = MutableSharedFlow<GalleryListEvent>()
-    private val results = merge(events, galleryListItems).map {
-        when (it) {
+    private val processEvents = MutableSharedFlow<UsfEvent>()
+    private val events = merge(processEvents, pagingLoadEvents)
+    private val results = events.mapNotNull {event ->
+        Log.d(TAG, "result: $event")
+        when (event) {
             GalleryListEvent.ScreenLoadEvent -> onScreenLoad()
-            is GalleryListEvent.GalleryListItemClickedEvent -> onGalleryListItemClickedResult(it.albumHash)
-            is GalleryListEvent.GalleryListItemPageLoadEvent -> onGalleryPageLoadResult(it.pagingData)
-            GalleryListEvent.AccountMenuClickedEvent -> onAccountMenuClicked()
-        }
-    }
-
-    val viewState = results.scan(GalleryListViewState()) { prevState, result ->
-        when (result) {
-            is GalleryListResult.GalleryListPageLoadResult -> prevState.copy(galleryListPagingData = result.pagingData)
-            else -> prevState
-        }
-    }.distinctUntilChanged()
-
-    val viewEffects = results.mapNotNull { result ->
-        when (result) {
-            is GalleryListResult.GalleryListItemClickedResult -> {
-                GalleryViewEffect.GalleryListItemClicked(result.albumHash)
-            }
-            GalleryListResult.AccountMenuClickedResult -> {
-                GalleryViewEffect.AccountMenuClickedEffect
-            }
+            is GalleryListEvent.GalleryListItemClickedEvent -> onGalleryListItemClickedResult(event.albumHash)
+            is GalleryListEvent.GalleryListItemPageLoadEvent -> onGalleryPageLoadResult(event.pagingData)
             else -> null
         }
     }
 
-    fun processEvent(event: GalleryListEvent) {
+    val viewState = results.scan(GalleryListViewState()) { previousState, result ->
+        Log.d(TAG, "viewState: $result")
+        when (result) {
+            is GalleryListResult.GalleryListPageLoadResult -> previousState.copy(galleryListPagingData = result.pagingData)
+            else -> previousState
+        }
+    }
+//        .combine(accountMenuViewState) { viewState, accountMenuViewState ->
+//        Log.d(TAG, "viewState combine: $accountMenuViewState")
+//        viewState.copy(
+//            accountMenuViewState = accountMenuViewState
+//        )
+//    }
+        .distinctUntilChanged()
+
+    val viewEffects = merge(results.mapNotNull { result ->
+        when (result) {
+            is GalleryListResult.GalleryListItemClickedResult -> {
+                GalleryListEffect.GalleryListItemClicked(result.albumHash)
+            }
+            else -> null
+        }
+    },
+        accountMenuEffects
+    )
+
+    fun processEvent(event: UsfEvent) {
         viewModelScope.launch {
-            events.emit(event)
+            processEvents.emit(event)
         }
     }
 
@@ -102,28 +120,25 @@ class GalleryListViewModel @AssistedInject constructor(
 
     private fun onGalleryPageLoadResult(pagingData: PagingData<GalleryListItem>): GalleryListResult.GalleryListPageLoadResult = GalleryListResult.GalleryListPageLoadResult(pagingData)
 
-    private fun onAccountMenuClicked(): GalleryListResult.AccountMenuClickedResult = GalleryListResult.AccountMenuClickedResult
-
     fun test() {
-        imgurAuthState.performActionWithFreshTokens(imgurKtAuthService, object : AuthState.AuthStateAction {
-            override fun execute(
-                accessToken: String?,
-                idToken: String?,
-                ex: AuthorizationException?
-            ) {
-                if (ex != null) {
-                    Log.d(TAG, "exception: $ex")
-                    return
-                } else {
-                    accessToken?.let {
-                        viewModelScope.launch {
-                            val myAccountImages = imgurRepository.getMyAccountImages(it)
-                            Log.d(TAG, "got myAccountImages: ${myAccountImages.data.size}")
-                        }
-                    }
-                }
-            }
-
-        })
+//        imgurAuthState.performActionWithFreshTokens(imgurKtAuthService, object : AuthState.AuthStateAction {
+//            override fun execute(
+//                accessToken: String?,
+//                idToken: String?,
+//                ex: AuthorizationException?
+//            ) {
+//                if (ex != null) {
+//                    Log.d(TAG, "exception: $ex")
+//                    return
+//                } else {
+//                    accessToken?.let {
+//                        viewModelScope.launch {
+//                            val myAccountImages = imgurRepository.getMyAccountImages(it)
+//                            Log.d(TAG, "got myAccountImages: ${myAccountImages.data.size}")
+//                        }
+//                    }
+//                }
+//            }
+//        })
     }
 }

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menuActionAccount"
-        android:title="@string/my_images"
+        android:title="@string/my_account"
         android:icon="@drawable/ic_account_circle_outline"
         app:iconTint="@color/imgur_green"
         app:showAsAction="always"/>
