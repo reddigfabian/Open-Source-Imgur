@@ -21,6 +21,9 @@ import com.fret.shared_menus.account.usf.AccountMenuEvent
 import com.fret.usf.UsfEvent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -88,14 +91,7 @@ class GalleryListViewModel @AssistedInject constructor(
             is GalleryListResult.GalleryListPageLoadResult -> previousState.copy(galleryListPagingData = result.pagingData)
             else -> previousState
         }
-    }
-//        .combine(accountMenuViewState) { viewState, accountMenuViewState ->
-//        Log.d(TAG, "viewState combine: $accountMenuViewState")
-//        viewState.copy(
-//            accountMenuViewState = accountMenuViewState
-//        )
-//    }
-        .distinctUntilChanged()
+    }.distinctUntilChanged()
 
     val viewEffects = merge(results.mapNotNull { result ->
         when (result) {
@@ -115,12 +111,10 @@ class GalleryListViewModel @AssistedInject constructor(
     }
 
     private fun onScreenLoad(): GalleryListResult.ScreenLoadResult = GalleryListResult.ScreenLoadResult
-
     private fun onGalleryListItemClickedResult(albumHash: String): GalleryListResult.GalleryListItemClickedResult = GalleryListResult.GalleryListItemClickedResult(albumHash)
-
     private fun onGalleryPageLoadResult(pagingData: PagingData<GalleryListItem>): GalleryListResult.GalleryListPageLoadResult = GalleryListResult.GalleryListPageLoadResult(pagingData)
 
-    fun test() {
+//    fun test() {
 //        imgurAuthState.performActionWithFreshTokens(imgurKtAuthService, object : AuthState.AuthStateAction {
 //            override fun execute(
 //                accessToken: String?,
@@ -140,5 +134,5 @@ class GalleryListViewModel @AssistedInject constructor(
 //                }
 //            }
 //        })
-    }
+//    }
 }

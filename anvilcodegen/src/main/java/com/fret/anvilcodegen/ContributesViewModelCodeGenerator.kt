@@ -31,8 +31,8 @@ import javax.inject.Inject
 @AutoService(CodeGenerator::class)
 class ContributesViewModelCodeGenerator : CodeGenerator {
     companion object {
-        private val viewModelFactoryFqName = FqName("com.fret.utils.ViewModelFactory")
-        private val viewModelKeyFqName = FqName("com.fret.utils.ViewModelKey")
+        private val viewModelFactoryFqName = FqName("com.fret.utils.di.ViewModelFactory")
+        private val viewModelKeyFqName = FqName("com.fret.utils.di.ViewModelKey")
     }
 
     override fun isApplicable(context: AnvilContext): Boolean = true

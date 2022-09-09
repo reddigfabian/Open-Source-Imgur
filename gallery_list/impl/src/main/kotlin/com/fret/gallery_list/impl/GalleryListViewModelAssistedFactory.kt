@@ -8,11 +8,6 @@
 
 package com.fret.gallery_list.impl
 
-import com.fret.gallery_list.impl.viewmodels.GalleryListViewModel
-import com.fret.utils.ViewModelFactory
-import com.fret.utils.ViewModelFactoryExperimental
-import dagger.assisted.AssistedFactory
-import kotlin.String
 import kotlin.Suppress
 
 //@AssistedFactory

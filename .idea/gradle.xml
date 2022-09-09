@@ -30,6 +30,8 @@
             <option value="$PROJECT_DIR$/shared_resources" />
             <option value="$PROJECT_DIR$/usf" />
             <option value="$PROJECT_DIR$/utils" />
+            <option value="$PROJECT_DIR$/utils/di" />
+            <option value="$PROJECT_DIR$/utils/view" />
           </set>
         </option>
       </GradleProjectSettings>

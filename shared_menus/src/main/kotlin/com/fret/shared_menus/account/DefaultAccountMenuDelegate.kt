@@ -1,6 +1,8 @@
 package com.fret.shared_menus.account
 
+import android.app.Activity
 import android.util.Log
+import androidx.activity.result.ActivityResult
 import com.fret.menus.R
 import com.fret.shared_menus.account.usf.AccountMenuEffect
 import com.fret.shared_menus.account.usf.AccountMenuEvent
@@ -9,8 +11,10 @@ import com.fret.shared_menus.account.usf.AccountMenuViewState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.scan
+import kotlinx.coroutines.launch
 import net.openid.appauth.AuthState
-import java.util.*
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationResponse
 import javax.inject.Inject
 
 private const val TAG = "DefaultAccountMenuDeleg"
@@ -103,5 +107,33 @@ class DefaultAccountMenuDelegate @Inject constructor(
 
     override suspend fun processEvent(event: AccountMenuEvent) {
         accountMenuEvents.emit(event)
+    }
+
+    override val onAuthActivityResult: suspend (result: ActivityResult) -> Unit = { result ->
+        when (result.resultCode) {
+            Activity.RESULT_OK -> {
+                result.data?.let { intent ->
+                    val resp = AuthorizationResponse.fromIntent(intent)
+                    val ex = AuthorizationException.fromIntent(intent)
+                    Log.d(TAG, "imgurAuthState: $imgurAuthState")
+                    imgurAuthState.update(resp, ex)
+                    if (ex != null) {
+                        Log.e(TAG, "AppAuth Activity result returned exception", ex)
+                    } else {
+                        Log.d(TAG, "AppAuth Activity result returned successfully")
+                        processEvent(AccountMenuEvent.AuthSucceededEvent)
+                    }
+
+                } ?: run {
+                    Log.e(TAG, "AppAuth Activity result returned with a null data Intent")
+                }
+            }
+            Activity.RESULT_CANCELED -> {
+                Log.d(TAG, "AppAuth Activity result returned due to user cancellation")
+            }
+            else -> {
+                Log.e(TAG, "AppAuth Activity result returned with unexpected Activity result")
+            }
+        }
     }
 }

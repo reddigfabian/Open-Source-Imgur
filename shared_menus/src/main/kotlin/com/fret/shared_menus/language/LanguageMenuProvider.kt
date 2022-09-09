@@ -4,16 +4,13 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.MenuProvider
-import com.fret.di.AppScope
 import com.fret.menus.R
-import com.squareup.anvil.annotations.ContributesBinding
 import java.util.*
-import javax.inject.Inject
 
 class LanguageMenuProvider(private val languageSelectListener: LanguageSelectListener = LanguageSelectListener()): MenuProvider {
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.album_menu, menu)
+        menuInflater.inflate(R.menu.language_menu, menu)
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

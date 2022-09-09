@@ -1,9 +1,9 @@
 package com.fret.imgur_api.api.responses.api
 
-import com.fret.imgur_api.api.models.api.APICreditsData
+import com.fret.imgur_api.api.models.api.APICreditsModel
 
 data class APICreditsResponse(
-    val data : APICreditsData,
+    val data : APICreditsModel,
     val success : Boolean,
     val status : Int
 )

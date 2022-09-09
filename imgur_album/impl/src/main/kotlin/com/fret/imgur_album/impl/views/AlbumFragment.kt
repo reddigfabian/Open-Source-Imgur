@@ -2,7 +2,6 @@ package com.fret.imgur_album.impl.views
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,19 +19,18 @@ import com.fret.imgur_album.impl.di.AlbumComponent
 import com.fret.imgur_album.impl.usf.AlbumEvent
 import com.fret.imgur_album.impl.usf.AlbumViewEffect
 import com.fret.imgur_album.impl.viewmodels.AlbumViewModel
-import com.fret.shared_menus.account.AccountMenuProvider
 import com.fret.shared_menus.language.LanguageMenuProvider
-import com.fret.utils.DaggerComponentOwner
-import com.fret.utils.bindingViewModelFactory
-import com.fret.utils.bindings
-import com.fret.utils.fragmentComponent
+import com.fret.utils.di.DaggerComponentOwner
+import com.fret.utils.di.bindingViewModelFactory
+import com.fret.utils.di.bindings
+import com.fret.utils.di.fragmentComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 private const val TAG = "AlbumFragment"
 
 class AlbumFragment : Fragment(),
-    DaggerComponentOwner {
+    com.fret.utils.di.DaggerComponentOwner {
     private var _binding: FragmentAlbumBinding? = null
     //This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!

@@ -3,6 +3,7 @@ package com.fret.imgur_api.impl
 import com.fret.imgur_api.api.models.params.Section
 import com.fret.imgur_api.api.models.params.Sort
 import com.fret.imgur_api.api.models.params.Window
+import com.fret.imgur_api.api.responses.account.AccountResponse
 import com.fret.imgur_api.api.responses.album.AlbumImagesResponse
 import com.fret.imgur_api.api.responses.api.APICreditsResponse
 import com.fret.imgur_api.api.responses.gallery.GalleryListResponse
@@ -40,4 +41,10 @@ interface ImgurService {
     suspend fun getMyAccountImages(
         @Header("Authorization") accessToken : String
     ): ImageListResponse
+
+    @GET("account/{username}")
+    suspend fun getAccountForUsername(
+        @Header("Authorization") clientID : String,
+        @Path("username") username : String
+    ): AccountResponse
 }

@@ -3,10 +3,6 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-        maven {
-            url "https://jitpack.io"
-            credentials { username jitpack_authToken }
-        }
     }
 }
 dependencyResolutionManagement {
@@ -30,6 +26,8 @@ include ':imgur_api:impl'
 include ':di'
 include ':anvilcodegen'
 include ':utils'
+include ':utils:di'
+include ':utils:view'
 include ':imgur_auth'
 include ':imgur_auth:api'
 include ':imgur_auth:impl'

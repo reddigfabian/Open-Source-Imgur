@@ -1,5 +1,6 @@
 package com.fret.shared_menus.account
 
+import androidx.activity.result.ActivityResult
 import androidx.lifecycle.LifecycleObserver
 import com.fret.shared_menus.account.usf.AccountMenuEffect
 import com.fret.shared_menus.account.usf.AccountMenuEvent
@@ -14,4 +15,5 @@ interface AccountMenuDelegate {
     val accountMenuViewState: Flow<AccountMenuViewState>
     val accountMenuEffects: Flow<AccountMenuEffect>
     suspend fun processEvent(event: AccountMenuEvent)
+    val onAuthActivityResult: suspend (result: ActivityResult) -> Unit
 }

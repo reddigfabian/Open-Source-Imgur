@@ -36,6 +36,8 @@ object ApiModule {
     @SingleIn(AppScope::class)
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
+            .add(AccountModelAdapter())
+            .add(AccountSettingsModelAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
     }

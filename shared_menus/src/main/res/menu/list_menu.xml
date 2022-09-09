@@ -5,6 +5,6 @@
         android:id="@+id/menuActionAccount"
         android:title="@string/my_account"
         android:icon="@drawable/ic_account_circle_outline"
-        app:iconTint="@color/imgur_green"
+        app:iconTint="@android:color/transparent"
         app:showAsAction="always"/>
 </menu>

@@ -22,12 +22,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    def javaVersion = JavaVersion.VERSION_11
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = javaVersion.toString()
     }
 }
 anvil{
@@ -38,10 +39,12 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.0-beta01'
     implementation 'com.google.android.material:material:1.6.1'
+    implementation 'io.coil-kt:coil:2.1.0'
 
     implementation project(':shared_resources')
     implementation project(':di')
     implementation project(':usf')
+    implementation project(':utils:view')
     implementation project(':imgur_auth:api')
 
     testImplementation 'junit:junit:4.13.2'

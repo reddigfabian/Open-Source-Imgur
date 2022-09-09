@@ -57,7 +57,7 @@ dependencies {
     implementation project(":shared_resources")
     implementation project(':di')
     implementation project(':usf')
-    implementation project(':utils')
+    implementation project(':utils:di')
     implementation project(':shared_menus')
     implementation project(':imgur_api:api')
     implementation project(':imgur_auth:api')

@@ -55,7 +55,7 @@ dependencies {
     api project(":imgur_album:api")
     implementation project(":imgur_api:api")
     implementation project(":di")
-    implementation project(":utils")
+    implementation project(":utils:di")
     implementation project(":shared_resources")
     implementation project(':shared_menus')
 

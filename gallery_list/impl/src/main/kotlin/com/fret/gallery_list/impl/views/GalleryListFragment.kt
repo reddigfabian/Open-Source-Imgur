@@ -1,5 +1,7 @@
 package com.fret.gallery_list.impl.views
 
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuHost
 import androidx.fragment.app.Fragment
@@ -15,7 +18,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.fret.gallery_list.impl.GalleryListViewModelFactory
 import com.fret.gallery_list.impl.adapters.GalleryListAdapter
 import com.fret.gallery_list.impl.databinding.FragmentGalleryListBinding
 import com.fret.gallery_list.impl.di.GalleryListBindings
@@ -26,15 +28,16 @@ import com.fret.gallery_list.impl.usf.GalleryListEvent
 import com.fret.gallery_list.impl.usf.GalleryListViewState
 import com.fret.gallery_list.impl.viewmodels.GalleryListViewModel
 import com.fret.imgur_album.api.AlbumNavGraphArgs
+import com.fret.imgur_api.api.ImgurRepository
+import com.fret.imgur_api.api.models.account.NonProAccountModel
+import com.fret.imgur_api.api.models.account.ProAccountModel
 import com.fret.shared_menus.account.AccountMenuProvider
 import com.fret.shared_menus.account.usf.AccountMenuEffect
 import com.fret.shared_menus.account.usf.AccountMenuEvent
-import com.fret.shared_menus.account.usf.AccountMenuViewState
 import com.fret.shared_menus.language.LanguageMenuProvider
-import com.fret.utils.DaggerComponentOwner
-import com.fret.utils.bindingViewModelFactory
-import com.fret.utils.bindings
-import com.fret.utils.fragmentComponent
+import com.fret.utils.di.bindingViewModelFactory
+import com.fret.utils.di.bindings
+import com.fret.utils.di.fragmentComponent
 import kotlinx.coroutines.launch
 import net.openid.appauth.*
 import javax.inject.Inject
@@ -42,7 +45,7 @@ import javax.inject.Inject
 private const val TAG = "GalleryListFragment"
 
 class GalleryListFragment : Fragment(),
-    DaggerComponentOwner,
+    com.fret.utils.di.DaggerComponentOwner,
     GalleryListAdapter.GalleryListItemClickListener {
     private var _binding: FragmentGalleryListBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
@@ -53,11 +56,12 @@ class GalleryListFragment : Fragment(),
     }
 
     private val galleryListAdapter : GalleryListAdapter by lazy { GalleryListAdapter(this) }
-    private val accountMenuProvider: AccountMenuProvider by lazy { AccountMenuProvider(galleryListViewModel) }
+    private val accountMenuProvider: AccountMenuProvider by lazy { AccountMenuProvider(requireActivity().application, viewLifecycleOwner.lifecycleScope, galleryListViewModel) }
 
     @Inject lateinit var imgurAuthState: AuthState
     @Inject lateinit var imgurKtAuthRequest: AuthorizationRequest
     @Inject lateinit var imgurKtAuthService: AuthorizationService
+    @Inject lateinit var imgurRepository: ImgurRepository
 
     private val galleryListViewModel: GalleryListViewModel by bindingViewModelFactory()
 
@@ -125,32 +129,9 @@ class GalleryListFragment : Fragment(),
         findNavController().navigate(com.fret.imgur_album.api.R.id.album_nav_graph, AlbumNavGraphArgs(albumHash).toBundle())
     }
 
-    private val authResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        when (result.resultCode) {
-            Activity.RESULT_OK -> {
-                result.data?.let { intent ->
-                    val resp = AuthorizationResponse.fromIntent(intent)
-                    val ex = AuthorizationException.fromIntent(intent)
-                    Log.d(TAG, "imgurAuthState: $imgurAuthState")
-                    imgurAuthState.update(resp, ex)
-                    if (ex != null) {
-                        Log.e(TAG, "AppAuth Activity result returned exception", ex)
-                    } else {
-                        Log.d(TAG, "AppAuth Activity result returned successfully")
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            galleryListViewModel.processEvent(AccountMenuEvent.AuthSucceededEvent)
-                        }
-                    }
-                } ?: run {
-                    Log.e(TAG, "AppAuth Activity result returned with a null data Intent")
-                }
-            }
-            Activity.RESULT_CANCELED -> {
-                Log.d(TAG, "AppAuth Activity result returned due to user cancellation")
-            }
-            else -> {
-                Log.e(TAG, "AppAuth Activity result returned with unexpected Activity result")
-            }
+    private val authResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            galleryListViewModel.onAuthActivityResult.invoke(it)
         }
     }
 
