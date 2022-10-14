@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace 'com.fret.utils.di'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk 21
-        targetSdk 32
+        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -34,9 +34,9 @@ android {
 
 
 dependencies {
-    api 'androidx.appcompat:appcompat:1.5.0'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3'
-    implementation 'androidx.core:core-ktx:1.8.0'
+    api 'androidx.appcompat:appcompat:1.5.1'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
 
     implementation project(':di')

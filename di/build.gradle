@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api 'javax.inject:javax.inject:1'
-    api 'com.google.dagger:dagger:2.43.1'
+    api libs.javax.inject
+    api libs.dagger
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Quelloffenes Imgur</string>
     <string name="my_account">Mein Konto</string>
+    <string name="popular">Beliebt</string>
 
     <string name="language_select_flag">🇩🇪</string>
-    <string name="popular">Beliebt</string>
 </resources>

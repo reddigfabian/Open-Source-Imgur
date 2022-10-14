@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace 'com.fret.imgur_album.api'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk 21
-        targetSdk 32
+        targetSdk 33
 
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -32,6 +32,4 @@ android {
 }
 
 dependencies {
-    api 'androidx.navigation:navigation-fragment-ktx:2.5.1'
-    api 'androidx.navigation:navigation-ui-ktx:2.5.1'
 }

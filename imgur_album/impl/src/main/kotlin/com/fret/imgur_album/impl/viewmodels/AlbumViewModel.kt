@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fret.di.AppScope
 import com.fret.di.ContributesViewModel
+import com.fret.imgur_album.impl.di.AlbumScope
 import com.fret.imgur_album.impl.items.ImageListItem
 import com.fret.imgur_album.impl.usf.AlbumEvent
 import com.fret.imgur_album.impl.usf.AlbumResult
@@ -12,11 +13,15 @@ import com.fret.imgur_album.impl.usf.AlbumViewState
 import com.fret.imgur_api.api.ImgurRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
 
-@ContributesViewModel(AppScope::class)
-class AlbumViewModel @AssistedInject constructor(
+//@ContributesViewModel(AppScope::class)
+class AlbumViewModel @AssistedInject internal constructor(
     @Assisted private val albumHash: String,
     private val imgurRepository: ImgurRepository
 ) : ViewModel() {

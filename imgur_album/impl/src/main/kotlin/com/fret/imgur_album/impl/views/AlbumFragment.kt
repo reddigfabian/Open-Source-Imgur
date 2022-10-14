@@ -19,9 +19,9 @@ import com.fret.imgur_album.impl.di.AlbumComponent
 import com.fret.imgur_album.impl.usf.AlbumEvent
 import com.fret.imgur_album.impl.usf.AlbumViewEffect
 import com.fret.imgur_album.impl.viewmodels.AlbumViewModel
+import com.fret.imgur_album.impl.viewmodels.viewModelFactory
 import com.fret.shared_menus.language.LanguageMenuProvider
 import com.fret.utils.di.DaggerComponentOwner
-import com.fret.utils.di.bindingViewModelFactory
 import com.fret.utils.di.bindings
 import com.fret.utils.di.fragmentComponent
 import kotlinx.coroutines.flow.collectLatest
@@ -29,17 +29,16 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "AlbumFragment"
 
-class AlbumFragment : Fragment(),
-    com.fret.utils.di.DaggerComponentOwner {
+class AlbumFragment : Fragment(), DaggerComponentOwner {
     private var _binding: FragmentAlbumBinding? = null
     //This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
 
     override val daggerComponent: AlbumComponent by fragmentComponent { _, app ->
-        app.bindings<AlbumComponent.ParentBindings>().detailComponentBuilder().create()
+        app.bindings<AlbumComponent.ParentBindings>().albumComponentBuilder().create()
     }
 
-    private val albumViewModel: AlbumViewModel by bindingViewModelFactory {
+    private val albumViewModel: AlbumViewModel by viewModelFactory {
         AlbumNavGraphArgs.fromArgs(arguments).albumHash
     }
 

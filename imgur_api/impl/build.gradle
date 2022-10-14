@@ -6,14 +6,14 @@ plugins {
 
 android {
     namespace 'com.fret.imgur_api.impl'
-    compileSdk 32
+    compileSdk 33
     
     Properties localProperties = new Properties()
     localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 
     defaultConfig {
         minSdk 21
-        targetSdk 32
+        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -42,7 +42,7 @@ anvil {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.moshi:moshi-kotlin:1.13.0'

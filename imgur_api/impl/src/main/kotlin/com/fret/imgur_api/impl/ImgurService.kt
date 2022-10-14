@@ -8,10 +8,7 @@ import com.fret.imgur_api.api.responses.album.AlbumImagesResponse
 import com.fret.imgur_api.api.responses.api.APICreditsResponse
 import com.fret.imgur_api.api.responses.gallery.GalleryListResponse
 import com.fret.imgur_api.api.responses.image.ImageListResponse
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ImgurService {
     @GET("credits")
@@ -36,6 +33,18 @@ interface ImgurService {
         @Header("Authorization") clientID : String,
         @Path("albumHash") albumHash : String
     ) : AlbumImagesResponse
+
+    @POST("image/{imageHash}/favorite")
+    suspend fun favoriteAnImage(
+        @Header("Authorization") accessToken : String,
+        @Path("imageHash") albumHash : String
+    )
+
+    @POST("album/{albumHash}/favorite")
+    suspend fun favoriteAnAlbum(
+        @Header("Authorization") accessToken : String,
+        @Path("albumHash") albumHash : String
+    )
 
     @GET("account/me/images")
     suspend fun getMyAccountImages(

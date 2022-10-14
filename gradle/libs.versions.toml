@@ -1,0 +1,78 @@
+[versions]
+#gradle
+gradleplugin = "8.0.0-alpha09"
+
+#kotlin
+kotlin = "1.6.21"
+coroutines-android = "1.6.4"
+
+#dependency injection
+anvil = "2.4.2"
+dagger = "2.43.2"
+
+#java
+javax-inject = "1"
+
+#android
+androidx = "1.9.0"
+appcompat = "1.7.0-alpha01"
+fragment = "1.5.4"
+navigation = "2.5.3"
+lifecycle = "2.5.1"
+material = "1.7.0"
+constraintlayout = "2.1.4"
+paging = "3.1.1"
+
+#3rd party
+exoplayer = "2.18.1"
+coil = "2.2.0"
+moshi = "1.13.0"
+
+#testing
+junit = "4.13.2"
+androidx-junit = "1.1.3"
+espresso = "2.5.3"
+
+[libraries]
+#kotlin
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines-android" }
+
+#dependency injection
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+
+#java
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
+
+#android
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
+androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigation" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+paging-runtime = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
+
+#3rd party
+exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoplayer" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil"}
+moshi = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
+
+#testing
+junit = { module = "junit:junit", version.ref = "junit" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+
+[bundles]
+#3rd party
+coil = ["coil", "coil-gif"]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "gradleplugin" }
+android-library = { id = "com.android.library", version.ref = "gradleplugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+anvil = { id = "com.squareup.anvil", version.ref = "anvil" }

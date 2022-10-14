@@ -6,14 +6,14 @@ plugins {
 
 android {
     namespace 'com.fret.imgur_auth.impl'
-    compileSdk 32
+    compileSdk 33
 
     Properties localProperties = new Properties()
     localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 
     defaultConfig {
         minSdk 16
-        targetSdk 32
+        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -41,7 +41,7 @@ anvil {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
 
     api(project(":imgur_auth:api"))
     implementation project(':di')

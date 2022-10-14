@@ -15,6 +15,6 @@ interface AlbumComponent {
 
     @ContributesTo(AppScope::class)
     interface ParentBindings {
-        fun detailComponentBuilder(): Factory
+        fun albumComponentBuilder(): Factory
     }
 }

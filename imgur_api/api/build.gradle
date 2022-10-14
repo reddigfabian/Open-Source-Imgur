@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace 'com.fret.imgur_api.api'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -30,5 +30,5 @@ android {
 }
 
 dependencies {
-    implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
+    implementation libs.moshi
 }

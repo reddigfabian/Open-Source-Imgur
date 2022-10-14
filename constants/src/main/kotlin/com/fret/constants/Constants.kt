@@ -1,7 +1,6 @@
 package com.fret.constants
 
 object Constants {
-
     const val IMGUR_AUTH_API_BASE_URL = "https://api.imgur.com/"
     const val IMGUR_API_BASE_URL = "https://api.imgur.com/3/"
     const val IMGUR_OAUTH2_AUTH_CODE = "${IMGUR_AUTH_API_BASE_URL}oauth2/authorize"
